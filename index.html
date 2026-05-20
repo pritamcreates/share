@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEPSE Research — Login</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#e8f4fd 0%,#f0f4f8 50%,#e8f0e8 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.wrap{width:100%;max-width:400px;padding:20px;}
+.card{background:#fff;border:1px solid #d0d7de;border-radius:14px;padding:44px 40px;box-shadow:0 8px 32px rgba(0,0,0,.08);}
+.brand{text-align:center;margin-bottom:32px;}
+.brand-icon{width:54px;height:54px;background:linear-gradient(135deg,#0969da,#0550ae);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;box-shadow:0 4px 14px rgba(9,105,218,.25);}
+.brand-name{font-size:20px;font-weight:800;color:#1f2328;letter-spacing:-.3px;}
+.brand-sub{font-size:12px;color:#57606a;margin-top:3px;}
+.live-dot{display:inline-block;width:7px;height:7px;background:#2da44e;border-radius:50%;margin-right:5px;animation:blink 2.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h2{font-size:17px;font-weight:700;color:#1f2328;margin-bottom:4px;}
+.sub{font-size:13px;color:#57606a;margin-bottom:24px;}
+.field{margin-bottom:16px;}
+label{display:block;font-size:11px;font-weight:700;color:#1f2328;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+input{width:100%;padding:11px 14px;border:1.5px solid #d0d7de;border-radius:8px;font-size:14px;font-family:inherit;color:#1f2328;background:#f6f8fa;outline:none;transition:border-color .15s,box-shadow .15s,background .15s;}
+input:focus{border-color:#0969da;background:#fff;box-shadow:0 0 0 3px rgba(9,105,218,.1);}
+.btn{width:100%;padding:12px;background:#0969da;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s,transform .1s;margin-top:6px;letter-spacing:.1px;}
+.btn:hover{background:#0860ca;}
+.btn:active{background:#0550ae;transform:scale(.99);}
+.error{background:#fff0ee;border:1px solid #ffcdc8;border-radius:8px;padding:11px 14px;font-size:13px;color:#cf222e;margin-top:14px;display:none;align-items:center;gap:8px;}
+.error.show{display:flex;}
+.footer{margin-top:28px;font-size:11px;color:#8c959f;text-align:center;line-height:1.8;border-top:1px solid #f0f0f0;padding-top:18px;}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0;color:#8c959f;font-size:11px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e8e8e8;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">📊</div>
+      <div class="brand-name"><span class="live-dot"></span>NEPSE Research</div>
+      <div class="brand-sub">Fundamental Analysis Dashboard</div>
+    </div>
+
+    <h2>Welcome back</h2>
+    <p class="sub">Sign in to access your dashboard.</p>
+
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="u" placeholder="Enter your username" autocomplete="username" autofocus>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="p" placeholder="Enter your password" autocomplete="current-password">
+    </div>
+    <button class="btn" onclick="login()">Sign in →</button>
+
+    <div class="error" id="err">
+      <span>⚠</span>
+      <span>Incorrect username or password. Please try again.</span>
+    </div>
+
+    <div class="footer">
+      NEPSE Research Dashboard · Personal Use Only<br>
+      Not financial advice. Always do your own research.
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+
+function login() {
+  const u = document.getElementById('u').value.trim();
+  const p = document.getElementById('p').value;
+  const err = document.getElementById('err');
+  err.classList.remove('show');
+
+  if(u === atob('cHJpdGFtLmNoaGV0cmk=') && p === atob('OTMzMjQk')) {
+    const token = btoa(JSON.stringify({ v: 1, exp: Date.now() + 8*60*60*1000 }));
+    sessionStorage.setItem('_nr_session', token);
+    window.location.href = 'dashboard.html';
+  } else {
+    err.classList.add('show');
+    document.getElementById('p').value = '';
+    document.getElementById('p').focus();
+  }
+}
+
+// Skip login if already authenticated
+try {
+  const raw = sessionStorage.getItem('_nr_session');
+  if(raw) {
+    const d = JSON.parse(atob(raw));
+    if(d.v===1 && d.exp > Date.now()) window.location.href = 'dashboard.html';
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
