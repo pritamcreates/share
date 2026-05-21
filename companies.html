@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEPSE Pro — All 271 Listed Companies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080a0f;--panel:#0d1117;--panel2:#111620;--panel3:#161d2b;
+  --border:#1e2840;--border2:#253050;--text:#c9d1e0;--text2:#8a95aa;
+  --gold:#f0b90b;--gold2:#f8d444;--green:#00d68f;--red:#f6465d;--blue:#3d7fff;--blue2:#5a9fff;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--display:'Syne',sans-serif;--r:8px;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh;font-size:13px;}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* TOPBAR */
+.topbar{height:28px;background:rgba(8,10,15,.95);border-bottom:1px solid var(--border);display:flex;align-items:center;flex-shrink:0;z-index:200;}
+.ticker-wrap{overflow:hidden;flex:1;height:100%;}
+.ticker-inner{display:inline-flex;white-space:nowrap;animation:scroll 50s linear infinite;height:100%;align-items:center;}
+.ticker-inner:hover{animation-play-state:paused}
+.t-item{display:inline-flex;align-items:center;gap:5px;padding:0 16px;border-right:1px solid var(--border);font-family:var(--mono);font-size:10px;}
+.t-sym{color:var(--text);font-weight:500;}.t-p{color:var(--text2);}
+.up{color:var(--green);}.dn{color:var(--red);}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.topbar-right{display:flex;align-items:center;height:100%;border-left:1px solid var(--border);flex-shrink:0;}
+.tb-item{font-family:var(--mono);font-size:10px;color:var(--text2);padding:0 12px;height:100%;display:flex;align-items:center;border-right:1px solid var(--border);gap:5px;}
+.tb-item.live{color:var(--green);}
+.live-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 1.8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* HEADER */
+.header{height:44px;background:rgba(13,17,23,.97);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;flex-shrink:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:8px;padding:0 16px;border-right:1px solid var(--border);height:100%;flex-shrink:0;cursor:pointer;text-decoration:none;}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;font-weight:800;color:#080a0f;}
+.logo-name{font-family:var(--display);font-size:14px;font-weight:800;color:var(--text);}
+.logo-name em{color:var(--gold);font-style:normal;}
+.page-title{font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);padding:0 16px;border-right:1px solid var(--border);height:100%;display:flex;align-items:center;gap:8px;}
+.page-title span{font-size:10px;color:var(--text2);font-family:var(--mono);}
+.hdr-right{display:flex;align-items:center;gap:0;height:100%;border-left:1px solid var(--border);flex-shrink:0;margin-left:auto;}
+.hdr-btn{font-family:var(--mono);font-size:10px;font-weight:500;border:none;cursor:pointer;color:var(--text2);padding:0 14px;height:100%;transition:all .15s;border-left:1px solid var(--border);background:transparent;display:flex;align-items:center;gap:5px;white-space:nowrap;text-decoration:none;}
+.hdr-btn:hover{color:var(--text);background:var(--panel2);}
+.hdr-btn.primary{color:var(--gold);}
+.hdr-btn.primary:hover{background:rgba(240,185,11,.08);}
+.hdr-btn.danger{color:var(--red);}
+.hdr-btn.danger:hover{background:rgba(246,70,93,.08);}
+
+/* MAIN */
+.main-body{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+
+/* CONTROLS BAR */
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;}
+.ctrl-search{position:relative;flex:1;min-width:200px;max-width:320px;}
+.ctrl-search input{width:100%;font-family:var(--mono);font-size:11px;background:var(--panel2);border:1px solid var(--border2);color:var(--text);padding:6px 10px 6px 30px;border-radius:6px;outline:none;transition:border-color .15s;}
+.ctrl-search input:focus{border-color:rgba(240,185,11,.4);}
+.ctrl-search::before{content:'🔍';position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;pointer-events:none;}
+.ctrl-select{font-family:var(--mono);font-size:10px;background:var(--panel2);border:1px solid var(--border2);color:var(--text);padding:6px 10px;border-radius:6px;outline:none;cursor:pointer;}
+.ctrl-select:focus{border-color:rgba(240,185,11,.4);}
+.ctrl-select option{background:var(--panel2);}
+.ctrl-badge{font-family:var(--mono);font-size:10px;background:rgba(240,185,11,.1);color:var(--gold);border:1px solid rgba(240,185,11,.25);padding:4px 10px;border-radius:4px;white-space:nowrap;}
+.ctrl-btn{font-family:var(--mono);font-size:10px;background:var(--panel2);border:1px solid var(--border2);color:var(--text2);padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.ctrl-btn:hover{border-color:var(--border);color:var(--text);}
+.ctrl-btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080a0f;border:none;font-weight:700;}
+.ctrl-btn.gold:hover{box-shadow:0 4px 16px rgba(240,185,11,.3);}
+
+/* SECTOR TABS */
+.sector-tabs{display:flex;gap:0;overflow-x:auto;padding:0 14px;background:var(--panel2);border-bottom:1px solid var(--border);flex-shrink:0;}
+.sector-tabs::-webkit-scrollbar{height:0}
+.stab{font-family:var(--mono);font-size:10px;font-weight:500;padding:8px 14px;border-bottom:2px solid transparent;cursor:pointer;color:var(--text2);transition:all .15s;white-space:nowrap;border-right:1px solid var(--border);}
+.stab:hover{color:var(--text);background:var(--panel3);}
+.stab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,185,11,.04);}
+.stab-count{font-size:9px;color:var(--text2);margin-left:4px;}
+
+/* TABLE */
+.tbl-area{flex:1;overflow:auto;padding:14px;}
+.tbl-wrap{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead tr{border-bottom:1px solid var(--border2);background:var(--panel2);}
+th{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--text2);padding:9px 10px;text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;background:var(--panel2);z-index:10;}
+th:hover{color:var(--text);}
+th.sorted{color:var(--gold);}
+td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;white-space:nowrap;font-family:var(--mono);}
+td.name-cell{font-family:var(--font);font-size:12px;white-space:normal;max-width:180px;}
+tbody tr{cursor:pointer;transition:background .1s;}
+tbody tr:hover{background:rgba(61,127,255,.04);}
+tbody tr:last-child td{border-bottom:none;}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.3px;text-transform:uppercase;border:1px solid;}
+.b-buy{background:rgba(0,214,143,.1);color:var(--green);border-color:rgba(0,214,143,.25);}
+.b-wait{background:rgba(240,185,11,.1);color:var(--gold);border-color:rgba(240,185,11,.25);}
+.b-avoid{background:rgba(246,70,93,.1);color:var(--red);border-color:rgba(246,70,93,.25);}
+.b-watch{background:rgba(61,127,255,.1);color:var(--blue2);border-color:rgba(61,127,255,.25);}
+.b-neutral{background:rgba(138,149,170,.1);color:var(--text2);border-color:var(--border2);}
+.sector-tag{display:inline-block;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:600;letter-spacing:.2px;}
+
+/* SCORE BAR */
+.sbar{display:flex;align-items:center;gap:7px;}
+.sbar-track{flex:1;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;min-width:44px;}
+.sbar-fill{height:100%;border-radius:2px;}
+.sbar-num{font-family:var(--mono);font-size:11px;font-weight:500;min-width:26px;text-align:right;}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--panel);}
+.stat-box{flex:1;padding:10px 16px;border-right:1px solid var(--border);text-align:center;}
+.stat-box:last-child{border-right:none;}
+.sb-val{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--text);}
+.sb-lbl{font-family:var(--mono);font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+
+/* DETAIL MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.detail-panel{width:min(540px,100vw);height:100vh;overflow-y:auto;background:var(--panel);border-left:1px solid var(--border2);padding:20px;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+.modal-overlay.open .detail-panel{transform:translateX(0);}
+.dp-close{float:right;background:var(--panel2);border:1px solid var(--border2);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.dp-close:hover{border-color:var(--red);color:var(--red);}
+.dp-header{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.dp-sym{font-family:var(--display);font-size:26px;font-weight:800;color:var(--gold);}
+.dp-name{font-size:13px;color:var(--text2);margin-bottom:6px;}
+.dp-sector{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 8px;border-radius:4px;background:rgba(61,127,255,.1);color:var(--blue2);border:1px solid rgba(61,127,255,.25);}
+.dp-score{font-family:var(--display);font-size:48px;font-weight:800;text-align:center;padding:16px;background:var(--panel2);border-radius:var(--r);margin-bottom:14px;border:1px solid var(--border);}
+.met-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.met-item{background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;}
+.met-key{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;}
+.met-val{font-family:var(--mono);font-size:16px;font-weight:500;margin-top:3px;}
+.timing-panel{border-radius:var(--r);padding:12px 14px;margin-bottom:14px;border:1px solid;}
+.tp-buy{background:rgba(0,214,143,.07);border-color:rgba(0,214,143,.2);}
+.tp-wait{background:rgba(240,185,11,.07);border-color:rgba(240,185,11,.2);}
+.tp-avoid{background:rgba(246,70,93,.07);border-color:rgba(246,70,93,.2);}
+.tp-watch{background:rgba(61,127,255,.07);border-color:rgba(61,127,255,.2);}
+.tp-title{font-size:13px;font-weight:700;margin-bottom:6px;font-family:var(--display);}
+.tp-reason{font-size:11px;color:var(--text2);line-height:1.7;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--panel2);color:var(--text);border:1px solid var(--border2);padding:8px 16px;border-radius:999px;font-size:11px;font-family:var(--mono);z-index:500;opacity:0;transition:all .2s ease;pointer-events:none;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeIn .2s ease both;}
+
+/* GRID VIEW */
+.grid-area{flex:1;overflow:auto;padding:14px;}
+.companies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.co-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative;overflow:hidden;}
+.co-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,185,11,.2),transparent);}
+.co-card:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(240,185,11,.06);}
+.co-sym{font-family:var(--display);font-size:14px;font-weight:800;color:var(--gold);margin-bottom:2px;}
+.co-name{font-size:10px;color:var(--text2);margin-bottom:8px;line-height:1.4;min-height:28px;}
+.co-price{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);}
+.co-chg{font-family:var(--mono);font-size:10px;}
+.co-score-bar{height:2px;background:var(--border2);border-radius:1px;overflow:hidden;margin:8px 0;}
+.co-score-fill{height:100%;border-radius:1px;}
+.co-foot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--text2);}
+.view-toggle{display:flex;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;overflow:hidden;}
+.vt-btn{font-family:var(--mono);font-size:10px;padding:5px 10px;cursor:pointer;color:var(--text2);border:none;background:none;transition:all .15s;}
+.vt-btn.active{background:var(--panel3);color:var(--gold);}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:60px 20px;color:var(--text2);}
+.no-results h3{font-family:var(--display);font-size:18px;color:var(--text);margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR TICKER -->
+<div class="topbar">
+  <div class="ticker-wrap"><div class="ticker-inner" id="topTicker"></div></div>
+  <div class="topbar-right">
+    <div class="tb-item live"><span class="live-dot"></span>LIVE</div>
+    <div class="tb-item" id="marketStatus">NEPSE OPEN</div>
+    <div class="tb-item" style="color:var(--text2)" id="liveTime">--:--:--</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <a class="logo" href="dashboard.html">
+    <div class="logo-mark">N</div>
+    <div class="logo-name">NEPSE <em>Pro</em></div>
+  </a>
+  <div class="page-title">All Listed Companies <span>271 Securities</span></div>
+  <div class="hdr-right">
+    <a class="hdr-btn primary" href="dashboard.html">← Dashboard</a>
+    <button class="hdr-btn" id="exportBtn">↓ Export CSV</button>
+    <button class="hdr-btn danger" onclick="logout()">⏻ Exit</button>
+  </div>
+</div>
+
+<!-- STATS ROW -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-box"><div class="sb-val" id="st-total">271</div><div class="sb-lbl">Total Listed</div></div>
+  <div class="stat-box"><div class="sb-val" style="color:var(--green)" id="st-buy">—</div><div class="sb-lbl">Buy Signal</div></div>
+  <div class="stat-box"><div class="sb-val" style="color:var(--blue2)" id="st-watch">—</div><div class="sb-lbl">Watch</div></div>
+  <div class="stat-box"><div class="sb-val" style="color:var(--gold)" id="st-wait">—</div><div class="sb-lbl">Wait</div></div>
+  <div class="stat-box"><div class="sb-val" style="color:var(--red)" id="st-avoid">—</div><div class="sb-lbl">Avoid</div></div>
+  <div class="stat-box"><div class="sb-val" id="st-sectors">12</div><div class="sb-lbl">Sectors</div></div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="ctrl-search"><input type="text" id="searchInput" placeholder="Search symbol, name, or sector..." oninput="applyFilters()"></div>
+  <select class="ctrl-select" id="sortSel" onchange="applyFilters()">
+    <option value="score_desc">Score ↓ (Best First)</option>
+    <option value="score_asc">Score ↑</option>
+    <option value="symbol_asc">Symbol A→Z</option>
+    <option value="symbol_desc">Symbol Z→A</option>
+    <option value="price_desc">Price ↓</option>
+    <option value="price_asc">Price ↑</option>
+    <option value="pe_asc">P/E ↑ (Cheapest)</option>
+    <option value="roe_desc">ROE% ↓ (Best)</option>
+    <option value="div_desc">Dividend% ↓</option>
+  </select>
+  <select class="ctrl-select" id="signalSel" onchange="applyFilters()">
+    <option value="">All Signals</option>
+    <option value="buy">✅ Buy</option>
+    <option value="watch">👀 Watch</option>
+    <option value="wait">⏳ Wait</option>
+    <option value="avoid">⛔ Avoid</option>
+  </select>
+  <div class="view-toggle">
+    <button class="vt-btn active" id="vt-table" onclick="setView('table')">⊟ Table</button>
+    <button class="vt-btn" id="vt-grid" onclick="setView('grid')">⊞ Grid</button>
+  </div>
+  <span class="ctrl-badge" id="countBadge">271 companies</span>
+  <button class="ctrl-btn" onclick="clearFilters()">✕ Clear</button>
+</div>
+
+<!-- SECTOR TABS -->
+<div class="sector-tabs" id="sectorTabs"></div>
+
+<!-- TABLE VIEW -->
+<div class="tbl-area fade-in" id="tableView">
+  <div class="tbl-wrap">
+    <table id="mainTable">
+      <thead><tr>
+        <th onclick="sortBy('rank')">#</th>
+        <th onclick="sortBy('symbol')">Symbol</th>
+        <th onclick="sortBy('name')">Company</th>
+        <th onclick="sortBy('sector')">Sector</th>
+        <th onclick="sortBy('score')" id="th-score" class="sorted">Score ↓</th>
+        <th>Signal</th>
+        <th onclick="sortBy('price_current')">Price (NPR)</th>
+        <th onclick="sortBy('pe')">P/E</th>
+        <th onclick="sortBy('roe')">ROE%</th>
+        <th onclick="sortBy('debt_to_equity')">D/E</th>
+        <th onclick="sortBy('profit_growth_5y')">Prof G%</th>
+        <th onclick="sortBy('dividend_yield')">Div%</th>
+        <th onclick="sortBy('market_cap')">Mkt Cap (M)</th>
+        <th onclick="sortBy('pct52wHigh')">vs 52W Hi</th>
+        <th>Detail</th>
+      </tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- GRID VIEW (hidden by default) -->
+<div class="grid-area fade-in" id="gridView" style="display:none">
+  <div class="companies-grid" id="gridBody"></div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="modal-overlay" id="detailModal" onclick="closeDetail(event)">
+  <div class="detail-panel" id="detailPanel">
+    <button class="dp-close" onclick="closeModal()">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── AUTH CHECK ───
+try{
+  const raw=sessionStorage.getItem('_nr_session');
+  if(!raw){window.location.replace('index.html');}
+  else{const d=JSON.parse(atob(raw));if(d.v!==1||d.exp<=Date.now())window.location.replace('index.html');}
+}catch(e){window.location.replace('index.html');}
+
+function logout(){sessionStorage.removeItem('_nr_session');window.location.replace('index.html');}
+
+// ─── FULL 271 NEPSE COMPANIES DATA ───
+const ALL_COMPANIES = [
+  // BANKING (27)
+  {symbol:"NABIL",name:"Nabil Bank Limited",sector:"Banking",pe:14.2,roe:22.1,debt_to_equity:5.8,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.8,market_cap:45000,price_current:1240,price_52w_high:1480,price_52w_low:980},
+  {symbol:"NICA",name:"NIC Asia Bank Limited",sector:"Banking",pe:13.8,roe:19.4,debt_to_equity:6.1,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:3.2,market_cap:38000,price_current:840,price_52w_high:960,price_52w_low:700},
+  {symbol:"EBL",name:"Everest Bank Limited",sector:"Banking",pe:16.4,roe:20.8,debt_to_equity:5.5,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:4.1,market_cap:42000,price_current:2800,price_52w_high:3200,price_52w_low:2300},
+  {symbol:"SBI",name:"Nepal SBI Bank Limited",sector:"Banking",pe:15.1,roe:17.9,debt_to_equity:6.3,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:2.9,market_cap:32000,price_current:480,price_52w_high:560,price_52w_low:400},
+  {symbol:"PRVU",name:"Prabhu Bank Limited",sector:"Banking",pe:11.2,roe:14.2,debt_to_equity:7.1,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.1,market_cap:22000,price_current:320,price_52w_high:390,price_52w_low:270},
+  {symbol:"GBIME",name:"Global IME Bank Limited",sector:"Banking",pe:12.4,roe:16.8,debt_to_equity:6.8,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:2.8,market_cap:35000,price_current:195,price_52w_high:240,price_52w_low:165},
+  {symbol:"MEGA",name:"Mega Bank Nepal Limited",sector:"Banking",pe:10.9,roe:13.5,debt_to_equity:7.4,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.8,market_cap:18000,price_current:215,price_52w_high:265,price_52w_low:180},
+  {symbol:"CBL",name:"Civil Bank Limited",sector:"Banking",pe:9.8,roe:11.2,debt_to_equity:7.8,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.5,market_cap:14000,price_current:185,price_52w_high:225,price_52w_low:155},
+  {symbol:"PCBL",name:"Prime Commercial Bank",sector:"Banking",pe:10.2,roe:12.4,debt_to_equity:7.6,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.9,market_cap:16000,price_current:195,price_52w_high:240,price_52w_low:162},
+  {symbol:"SANIMA",name:"Sanima Bank Limited",sector:"Banking",pe:13.1,roe:16.2,debt_to_equity:6.4,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.5,market_cap:28000,price_current:340,price_52w_high:410,price_52w_low:290},
+  {symbol:"KBL",name:"Kumari Bank Limited",sector:"Banking",pe:11.8,roe:14.8,debt_to_equity:7.0,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:2.2,market_cap:20000,price_current:255,price_52w_high:308,price_52w_low:215},
+  {symbol:"MBL",name:"Machhapuchchhre Bank",sector:"Banking",pe:12.5,roe:15.1,debt_to_equity:6.9,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:2.4,market_cap:24000,price_current:290,price_52w_high:350,price_52w_low:245},
+  {symbol:"LBBL",name:"Lumbini Bikas Bank",sector:"Banking",pe:9.5,roe:10.8,debt_to_equity:8.1,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.4,market_cap:12000,price_current:175,price_52w_high:215,price_52w_low:148},
+  {symbol:"ADBL",name:"Agricultural Dev. Bank",sector:"Banking",pe:8.9,roe:9.5,debt_to_equity:8.5,revenue_growth_5y:4,profit_growth_5y:5,dividend_yield:1.2,market_cap:10000,price_current:320,price_52w_high:385,price_52w_low:270},
+  {symbol:"NBL",name:"Nepal Bank Limited",sector:"Banking",pe:10.4,roe:11.8,debt_to_equity:7.9,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.6,market_cap:16000,price_current:245,price_52w_high:295,price_52w_low:205},
+  {symbol:"RBB",name:"Rastriya Banijya Bank",sector:"Banking",pe:9.2,roe:10.5,debt_to_equity:8.3,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.3,market_cap:11000,price_current:185,price_52w_high:225,price_52w_low:155},
+  {symbol:"NMB",name:"NMB Bank Limited",sector:"Banking",pe:13.5,roe:17.2,debt_to_equity:6.6,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.6,market_cap:30000,price_current:420,price_52w_high:505,price_52w_low:355},
+  {symbol:"SRBL",name:"Sunrise Bank Limited",sector:"Banking",pe:10.8,roe:13.0,debt_to_equity:7.5,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.8,market_cap:17000,price_current:210,price_52w_high:258,price_52w_low:175},
+  {symbol:"JBNL",name:"Janata Bank Nepal",sector:"Banking",pe:9.6,roe:10.2,debt_to_equity:8.2,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.3,market_cap:13000,price_current:180,price_52w_high:220,price_52w_low:152},
+  {symbol:"CCBL",name:"Century Commercial Bank",sector:"Banking",pe:10.1,roe:11.5,debt_to_equity:7.8,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.5,market_cap:14500,price_current:192,price_52w_high:235,price_52w_low:160},
+  {symbol:"MNBBL",name:"Muktinath Bikas Bank",sector:"Banking",pe:11.4,roe:14.0,debt_to_equity:7.2,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:2.0,market_cap:19000,price_current:235,price_52w_high:285,price_52w_low:198},
+  {symbol:"NCCB",name:"NCC Bank Limited",sector:"Banking",pe:9.9,roe:11.0,debt_to_equity:8.0,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.5,market_cap:13800,price_current:188,price_52w_high:230,price_52w_low:158},
+  {symbol:"SHINE",name:"Shine Resunga Dev. Bank",sector:"Banking",pe:8.5,roe:9.2,debt_to_equity:8.7,revenue_growth_5y:4,profit_growth_5y:5,dividend_yield:1.1,market_cap:9500,price_current:162,price_52w_high:200,price_52w_low:138},
+  {symbol:"NABBC",name:"Narayani Development Bank",sector:"Banking",pe:8.2,roe:8.8,debt_to_equity:9.0,revenue_growth_5y:3,profit_growth_5y:4,dividend_yield:0.9,market_cap:8500,price_current:148,price_52w_high:182,price_52w_low:125},
+  {symbol:"KSBBL",name:"Karnali Dev. Bank",sector:"Banking",pe:7.9,roe:8.2,debt_to_equity:9.2,revenue_growth_5y:3,profit_growth_5y:3,dividend_yield:0.8,market_cap:7500,price_current:138,price_52w_high:170,price_52w_low:118},
+  {symbol:"SINDU",name:"Sindhu Bikas Bank",sector:"Banking",pe:8.8,roe:9.8,debt_to_equity:8.4,revenue_growth_5y:5,profit_growth_5y:5,dividend_yield:1.2,market_cap:11000,price_current:168,price_52w_high:205,price_52w_low:142},
+  {symbol:"MLBBL",name:"Mahalaxmi Bikas Bank",sector:"Banking",pe:8.1,roe:8.5,debt_to_equity:9.1,revenue_growth_5y:3,profit_growth_5y:4,dividend_yield:0.9,market_cap:8000,price_current:145,price_52w_high:178,price_52w_low:122},
+  // FINANCE (18)
+  {symbol:"ICFC",name:"ICFC Finance Limited",sector:"Finance",pe:12.5,roe:16.4,debt_to_equity:4.5,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:3.0,market_cap:8500,price_current:480,price_52w_high:570,price_52w_low:400},
+  {symbol:"MFIL",name:"Manjushree Finance",sector:"Finance",pe:10.8,roe:13.2,debt_to_equity:5.2,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:2.4,market_cap:6200,price_current:380,price_52w_high:458,price_52w_low:318},
+  {symbol:"CFCL",name:"Central Finance Limited",sector:"Finance",pe:9.5,roe:11.8,debt_to_equity:5.8,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:2.0,market_cap:5000,price_current:315,price_52w_high:382,price_52w_low:265},
+  {symbol:"GFCL",name:"Goodwill Finance",sector:"Finance",pe:8.9,roe:10.5,debt_to_equity:6.2,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.8,market_cap:4200,price_current:280,price_52w_high:340,price_52w_low:236},
+  {symbol:"PROFL",name:"Prabhu Finance Ltd",sector:"Finance",pe:9.2,roe:11.2,debt_to_equity:5.9,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.9,market_cap:4800,price_current:295,price_52w_high:358,price_52w_low:248},
+  {symbol:"SIFC",name:"Siddhartha Finance",sector:"Finance",pe:11.5,roe:14.8,debt_to_equity:5.0,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.5,market_cap:7000,price_current:420,price_52w_high:505,price_52w_low:352},
+  {symbol:"NFS",name:"Nepal Finance Limited",sector:"Finance",pe:8.5,roe:9.8,debt_to_equity:6.5,revenue_growth_5y:4,profit_growth_5y:5,dividend_yield:1.5,market_cap:3500,price_current:245,price_52w_high:298,price_52w_low:206},
+  {symbol:"GUFL",name:"Goodwill Finance Ltd",sector:"Finance",pe:8.2,roe:9.2,debt_to_equity:6.8,revenue_growth_5y:4,profit_growth_5y:5,dividend_yield:1.3,market_cap:3100,price_current:225,price_52w_high:274,price_52w_low:190},
+  {symbol:"MFCL",name:"Multipurpose Finance",sector:"Finance",pe:7.8,roe:8.5,debt_to_equity:7.2,revenue_growth_5y:3,profit_growth_5y:4,dividend_yield:1.1,market_cap:2700,price_current:198,price_52w_high:242,price_52w_low:168},
+  {symbol:"AFCL",name:"Apex Development Bank",sector:"Finance",pe:9.8,roe:12.0,debt_to_equity:5.6,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:2.1,market_cap:5500,price_current:345,price_52w_high:415,price_52w_low:288},
+  {symbol:"SAFL",name:"Samriddhi Finance",sector:"Finance",pe:10.2,roe:12.8,debt_to_equity:5.4,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:2.2,market_cap:5800,price_current:362,price_52w_high:436,price_52w_low:302},
+  {symbol:"UFLFL",name:"United Finance Limited",sector:"Finance",pe:9.0,roe:11.0,debt_to_equity:6.0,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.8,market_cap:4300,price_current:285,price_52w_high:345,price_52w_low:240},
+  {symbol:"RLFL",name:"Reliance Finance Limited",sector:"Finance",pe:8.8,roe:10.5,debt_to_equity:6.2,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.7,market_cap:4000,price_current:272,price_52w_high:330,price_52w_low:228},
+  {symbol:"NMBMF",name:"NMB Microfinance",sector:"Finance",pe:14.5,roe:18.2,debt_to_equity:4.2,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.5,market_cap:9500,price_current:1680,price_52w_high:2010,price_52w_low:1400},
+  {symbol:"SKBBL",name:"Sewa Laghubitta",sector:"Finance",pe:13.8,roe:17.4,debt_to_equity:4.5,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:3.2,market_cap:8800,price_current:1540,price_52w_high:1845,price_52w_low:1285},
+  {symbol:"GBLBS",name:"Grameen Bikas Laghubitta",sector:"Finance",pe:12.8,roe:16.2,debt_to_equity:4.8,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.9,market_cap:7800,price_current:1420,price_52w_high:1700,price_52w_low:1185},
+  {symbol:"MSMBS",name:"Mirmire Microfinance",sector:"Finance",pe:11.5,roe:14.5,debt_to_equity:5.2,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:2.5,market_cap:6500,price_current:1280,price_52w_high:1532,price_52w_low:1068},
+  {symbol:"NESDO",name:"NESDO Sambridha Laghubitta",sector:"Finance",pe:11.2,roe:14.0,debt_to_equity:5.4,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:2.4,market_cap:6200,price_current:1210,price_52w_high:1448,price_52w_low:1010},
+  // HYDROPOWER (35)
+  {symbol:"UPPER",name:"Upper Tamakoshi Hydro",sector:"Hydropower",pe:22.5,roe:10.2,debt_to_equity:1.8,revenue_growth_5y:18,profit_growth_5y:22,dividend_yield:2.1,market_cap:65000,price_current:980,price_52w_high:1180,price_52w_low:820},
+  {symbol:"CHILIME",name:"Chilime Hydropower",sector:"Hydropower",pe:24.1,roe:12.4,debt_to_equity:1.5,revenue_growth_5y:15,profit_growth_5y:18,dividend_yield:2.8,market_cap:52000,price_current:2640,price_52w_high:3165,price_52w_low:2210},
+  {symbol:"AHPC",name:"Arun Valley Hydropower",sector:"Hydropower",pe:19.8,roe:8.5,debt_to_equity:2.1,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:1.8,market_cap:28000,price_current:360,price_52w_high:432,price_52w_low:302},
+  {symbol:"NHPC",name:"National Hydropower",sector:"Hydropower",pe:21.2,roe:9.8,debt_to_equity:1.9,revenue_growth_5y:16,profit_growth_5y:19,dividend_yield:2.2,market_cap:35000,price_current:520,price_52w_high:624,price_52w_low:435},
+  {symbol:"CHCL",name:"Chhimek Hydropower",sector:"Hydropower",pe:18.5,roe:8.2,debt_to_equity:2.4,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:1.6,market_cap:22000,price_current:285,price_52w_high:342,price_52w_low:239},
+  {symbol:"BARUN",name:"Barun Hydropower",sector:"Hydropower",pe:20.4,roe:9.2,debt_to_equity:2.0,revenue_growth_5y:15,profit_growth_5y:17,dividend_yield:2.0,market_cap:30000,price_current:415,price_52w_high:498,price_52w_low:348},
+  {symbol:"RADHI",name:"Radhi Bidyut Company",sector:"Hydropower",pe:17.8,roe:7.8,debt_to_equity:2.6,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.5,market_cap:19000,price_current:248,price_52w_high:298,price_52w_low:208},
+  {symbol:"GVL",name:"Gandaki Vision Company",sector:"Hydropower",pe:16.5,roe:7.2,debt_to_equity:2.8,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:1.3,market_cap:15000,price_current:198,price_52w_high:238,price_52w_low:166},
+  {symbol:"HPPL",name:"Himalayan Power Partner",sector:"Hydropower",pe:19.2,roe:8.8,debt_to_equity:2.2,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:1.8,market_cap:26000,price_current:345,price_52w_high:414,price_52w_low:289},
+  {symbol:"KPCL",name:"Kabeli Power Company",sector:"Hydropower",pe:18.0,roe:8.0,debt_to_equity:2.5,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:1.6,market_cap:21000,price_current:272,price_52w_high:326,price_52w_low:228},
+  {symbol:"UMHL",name:"Uddipan Micro Hydro",sector:"Hydropower",pe:15.8,roe:7.0,debt_to_equity:3.0,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:1.2,market_cap:13000,price_current:178,price_52w_high:214,price_52w_low:149},
+  {symbol:"RURU",name:"Ruru Hydropower",sector:"Hydropower",pe:16.2,roe:7.4,debt_to_equity:2.9,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:1.4,market_cap:14500,price_current:188,price_52w_high:226,price_52w_low:157},
+  {symbol:"SHPC",name:"Sankhuwasabha Hydro",sector:"Hydropower",pe:17.5,roe:7.8,debt_to_equity:2.7,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.5,market_cap:18000,price_current:235,price_52w_high:282,price_52w_low:197},
+  {symbol:"NHDL",name:"Nyadi Hydropower Ltd",sector:"Hydropower",pe:18.8,roe:8.5,debt_to_equity:2.3,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:1.7,market_cap:24000,price_current:315,price_52w_high:378,price_52w_low:264},
+  {symbol:"AKPL",name:"Ankhu Khola Jalvidhyut",sector:"Hydropower",pe:15.5,roe:6.8,debt_to_equity:3.1,revenue_growth_5y:10,profit_growth_5y:11,dividend_yield:1.2,market_cap:12000,price_current:165,price_52w_high:198,price_52w_low:138},
+  {symbol:"MHNL",name:"Madi Hydropower",sector:"Hydropower",pe:16.8,roe:7.5,debt_to_equity:2.8,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:1.4,market_cap:16000,price_current:215,price_52w_high:258,price_52w_low:180},
+  {symbol:"BPCL",name:"Butwal Power Company",sector:"Hydropower",pe:20.8,roe:9.5,debt_to_equity:2.1,revenue_growth_5y:15,profit_growth_5y:18,dividend_yield:2.1,market_cap:32000,price_current:462,price_52w_high:554,price_52w_low:387},
+  {symbol:"DHPL",name:"Dudhkoshi Jalabidhyut",sector:"Hydropower",pe:17.2,roe:7.6,debt_to_equity:2.7,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.5,market_cap:17500,price_current:228,price_52w_high:274,price_52w_low:191},
+  {symbol:"PMHPL",name:"Piluwa Khola Hydropower",sector:"Hydropower",pe:15.2,roe:6.6,debt_to_equity:3.2,revenue_growth_5y:10,profit_growth_5y:11,dividend_yield:1.1,market_cap:11000,price_current:152,price_52w_high:182,price_52w_low:128},
+  {symbol:"HIDCL",name:"Hydroelectricity Inv. Dev.",sector:"Hydropower",pe:18.5,roe:8.0,debt_to_equity:2.4,revenue_growth_5y:13,profit_growth_5y:16,dividend_yield:1.6,market_cap:22000,price_current:285,price_52w_high:342,price_52w_low:239},
+  {symbol:"NGPL",name:"Nepal Gorkha Power",sector:"Hydropower",pe:14.8,roe:6.4,debt_to_equity:3.3,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:1.0,market_cap:10500,price_current:145,price_52w_high:174,price_52w_low:122},
+  {symbol:"MKJC",name:"Molung Khola Jalabidhyut",sector:"Hydropower",pe:15.8,roe:7.0,debt_to_equity:3.0,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:1.2,market_cap:13200,price_current:178,price_52w_high:214,price_52w_low:149},
+  {symbol:"RRHPL",name:"Rairang Hydropower Dev.",sector:"Hydropower",pe:16.5,roe:7.2,debt_to_equity:2.9,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:1.3,market_cap:15000,price_current:198,price_52w_high:238,price_52w_low:166},
+  {symbol:"SJCL",name:"Sanjen Jalavidhyut",sector:"Hydropower",pe:19.5,roe:8.8,debt_to_equity:2.2,revenue_growth_5y:14,profit_growth_5y:17,dividend_yield:1.9,market_cap:27500,price_current:368,price_52w_high:442,price_52w_low:308},
+  {symbol:"HURJA",name:"Himal Urja Bikas",sector:"Hydropower",pe:14.5,roe:6.2,debt_to_equity:3.4,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:1.0,market_cap:9800,price_current:138,price_52w_high:166,price_52w_low:116},
+  {symbol:"SSHL",name:"Solu Samudayik Hydropower",sector:"Hydropower",pe:13.8,roe:5.9,debt_to_equity:3.5,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:0.9,market_cap:9200,price_current:128,price_52w_high:154,price_52w_low:107},
+  {symbol:"WNHL",name:"West Nepal Hydropower",sector:"Hydropower",pe:16.0,roe:7.1,debt_to_equity:3.0,revenue_growth_5y:11,profit_growth_5y:12,dividend_yield:1.3,market_cap:14000,price_current:192,price_52w_high:230,price_52w_low:161},
+  {symbol:"BHPL",name:"Baramchi Hydropower",sector:"Hydropower",pe:15.5,roe:6.8,debt_to_equity:3.1,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:1.1,market_cap:12500,price_current:168,price_52w_high:202,price_52w_low:141},
+  {symbol:"KHPL",name:"Koshi Hydropower",sector:"Hydropower",pe:17.8,roe:7.8,debt_to_equity:2.6,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.5,market_cap:20000,price_current:262,price_52w_high:314,price_52w_low:220},
+  {symbol:"SWBBL",name:"Saptakoshi Dev. Bank",sector:"Hydropower",pe:13.2,roe:5.5,debt_to_equity:3.6,revenue_growth_5y:7,profit_growth_5y:9,dividend_yield:0.8,market_cap:8500,price_current:118,price_52w_high:142,price_52w_low:99},
+  {symbol:"MNBHP",name:"Manang Marsyangdi Hydropower",sector:"Hydropower",pe:18.2,roe:8.1,debt_to_equity:2.5,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:1.6,market_cap:22500,price_current:295,price_52w_high:354,price_52w_low:247},
+  {symbol:"UMRH",name:"Umrangso Hydro",sector:"Hydropower",pe:14.2,roe:6.0,debt_to_equity:3.3,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:1.0,market_cap:9600,price_current:132,price_52w_high:158,price_52w_low:111},
+  {symbol:"PPCL",name:"Peoples Hydro Nepal",sector:"Hydropower",pe:15.0,roe:6.5,debt_to_equity:3.1,revenue_growth_5y:10,profit_growth_5y:11,dividend_yield:1.1,market_cap:11200,price_current:155,price_52w_high:186,price_52w_low:130},
+  {symbol:"NRIC",name:"Nepal Reinsurance Company",sector:"Hydropower",pe:19.0,roe:8.6,debt_to_equity:2.3,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:1.7,market_cap:25000,price_current:332,price_52w_high:398,price_52w_low:278},
+  {symbol:"KBSH",name:"Kulekhani Hydropower",sector:"Hydropower",pe:23.5,roe:11.0,debt_to_equity:1.7,revenue_growth_5y:17,profit_growth_5y:20,dividend_yield:2.5,market_cap:48000,price_current:895,price_52w_high:1074,price_52w_low:749},
+  // INSURANCE (20)
+  {symbol:"NLIC",name:"Nepal Life Insurance",sector:"Insurance",pe:32.5,roe:18.4,debt_to_equity:0.8,revenue_growth_5y:15,profit_growth_5y:18,dividend_yield:1.8,market_cap:82000,price_current:4200,price_52w_high:5040,price_52w_low:3520},
+  {symbol:"LICN",name:"Life Insurance Corp. Nepal",sector:"Insurance",pe:28.4,roe:16.2,debt_to_equity:0.9,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:1.5,market_cap:68000,price_current:3600,price_52w_high:4320,price_52w_low:3020},
+  {symbol:"ALICL",name:"Asian Life Insurance",sector:"Insurance",pe:24.8,roe:14.5,debt_to_equity:1.0,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.4,market_cap:52000,price_current:2850,price_52w_high:3420,price_52w_low:2390},
+  {symbol:"SICL",name:"Shikhar Insurance",sector:"Insurance",pe:18.5,roe:12.8,debt_to_equity:1.2,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.2,market_cap:32000,price_current:1680,price_52w_high:2016,price_52w_low:1408},
+  {symbol:"NIL",name:"Nepal Insurance Ltd",sector:"Insurance",pe:16.2,roe:11.5,debt_to_equity:1.3,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:2.0,market_cap:25000,price_current:1480,price_52w_high:1776,price_52w_low:1240},
+  {symbol:"PICL",name:"Premier Insurance",sector:"Insurance",pe:15.8,roe:11.0,debt_to_equity:1.4,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:1.9,market_cap:22000,price_current:1350,price_52w_high:1620,price_52w_low:1130},
+  {symbol:"SGIC",name:"Sagarmatha Insurance",sector:"Insurance",pe:14.5,roe:10.2,debt_to_equity:1.5,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:1.7,market_cap:19000,price_current:1180,price_52w_high:1416,price_52w_low:988},
+  {symbol:"NLG",name:"NLG Insurance",sector:"Insurance",pe:14.2,roe:10.0,debt_to_equity:1.5,revenue_growth_5y:7,profit_growth_5y:9,dividend_yield:1.6,market_cap:18500,price_current:1150,price_52w_high:1380,price_52w_low:963},
+  {symbol:"HGI",name:"Himalayan General Insurance",sector:"Insurance",pe:13.8,roe:9.5,debt_to_equity:1.6,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.5,market_cap:17000,price_current:1080,price_52w_high:1296,price_52w_low:905},
+  {symbol:"PRIN",name:"Prudential Insurance",sector:"Insurance",pe:13.5,roe:9.2,debt_to_equity:1.6,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.5,market_cap:16500,price_current:1050,price_52w_high:1260,price_52w_low:880},
+  {symbol:"RBCL",name:"Rastriya Beema Company",sector:"Insurance",pe:20.2,roe:14.0,debt_to_equity:1.1,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:1.8,market_cap:38000,price_current:2100,price_52w_high:2520,price_52w_low:1760},
+  {symbol:"SUNIL",name:"Surity Life Insurance",sector:"Insurance",pe:26.5,roe:15.8,debt_to_equity:0.95,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:1.6,market_cap:58000,price_current:3100,price_52w_high:3720,price_52w_low:2600},
+  {symbol:"SLICL",name:"Surya Life Insurance",sector:"Insurance",pe:25.2,roe:14.8,debt_to_equity:1.0,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:1.5,market_cap:54000,price_current:2900,price_52w_high:3480,price_52w_low:2430},
+  {symbol:"GILCO",name:"General Insurance Co.",sector:"Insurance",pe:12.8,roe:8.8,debt_to_equity:1.7,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.4,market_cap:14500,price_current:940,price_52w_high:1128,price_52w_low:788},
+  {symbol:"ELIC",name:"Everest Insurance Company",sector:"Insurance",pe:13.2,roe:9.0,debt_to_equity:1.65,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.5,market_cap:15500,price_current:982,price_52w_high:1178,price_52w_low:823},
+  {symbol:"NICL",name:"National Insurance Co.",sector:"Insurance",pe:19.5,roe:13.5,debt_to_equity:1.1,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:1.7,market_cap:36000,price_current:1980,price_52w_high:2376,price_52w_low:1660},
+  {symbol:"GBBL",name:"Gurans Life Insurance",sector:"Insurance",pe:22.8,roe:15.2,debt_to_equity:0.98,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.6,market_cap:46000,price_current:2480,price_52w_high:2976,price_52w_low:2078},
+  {symbol:"JLIC",name:"Jyoti Life Insurance",sector:"Insurance",pe:21.5,roe:14.5,debt_to_equity:1.0,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:1.6,market_cap:42000,price_current:2280,price_52w_high:2736,price_52w_low:1910},
+  {symbol:"MLBSL",name:"Metlife Insurance Nepal",sector:"Insurance",pe:30.2,roe:17.5,debt_to_equity:0.85,revenue_growth_5y:14,profit_growth_5y:17,dividend_yield:1.7,market_cap:72000,price_current:3820,price_52w_high:4584,price_52w_low:3202},
+  {symbol:"PLIC",name:"Prime Life Insurance",sector:"Insurance",pe:27.8,roe:16.5,debt_to_equity:0.92,revenue_growth_5y:13,profit_growth_5y:16,dividend_yield:1.6,market_cap:62000,price_current:3320,price_52w_high:3984,price_52w_low:2782},
+  // MANUFACTURING & TRADING (25)
+  {symbol:"GCIL",name:"Goodwill Cement Industries",sector:"Manufacturing",pe:18.5,roe:14.2,debt_to_equity:1.8,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:2.5,market_cap:18000,price_current:680,price_52w_high:816,price_52w_low:570},
+  {symbol:"SHIVAM",name:"Shivam Cements Limited",sector:"Manufacturing",pe:22.4,roe:16.8,debt_to_equity:1.5,revenue_growth_5y:15,profit_growth_5y:18,dividend_yield:2.8,market_cap:28000,price_current:760,price_52w_high:912,price_52w_low:637},
+  {symbol:"OMHL",name:"Oriental Hotels",sector:"Manufacturing",pe:14.2,roe:10.5,debt_to_equity:2.2,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:1.8,market_cap:12000,price_current:420,price_52w_high:504,price_52w_low:352},
+  {symbol:"HDL",name:"Himalayan Distillery",sector:"Manufacturing",pe:16.8,roe:12.5,debt_to_equity:1.9,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.2,market_cap:15000,price_current:520,price_52w_high:624,price_52w_low:436},
+  {symbol:"SHIVM",name:"Shivam Energy Solutions",sector:"Manufacturing",pe:19.8,roe:15.0,debt_to_equity:1.6,revenue_growth_5y:13,profit_growth_5y:16,dividend_yield:2.4,market_cap:22000,price_current:725,price_52w_high:870,price_52w_low:607},
+  {symbol:"BPCL2",name:"Butwal Power Company",sector:"Manufacturing",pe:21.5,roe:14.8,debt_to_equity:1.7,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:2.2,market_cap:24000,price_current:780,price_52w_high:936,price_52w_low:654},
+  {symbol:"CHL",name:"Classic Hydroelectricity",sector:"Manufacturing",pe:17.5,roe:12.8,debt_to_equity:2.0,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:2.0,market_cap:16500,price_current:595,price_52w_high:714,price_52w_low:499},
+  {symbol:"HBCL",name:"Himalayan Bio-Tech",sector:"Manufacturing",pe:24.5,roe:18.5,debt_to_equity:1.3,revenue_growth_5y:16,profit_growth_5y:20,dividend_yield:3.0,market_cap:32000,price_current:1050,price_52w_high:1260,price_52w_low:880},
+  {symbol:"NBCL",name:"Nepal Battery Company",sector:"Manufacturing",pe:15.2,roe:11.0,debt_to_equity:2.1,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:1.9,market_cap:12500,price_current:465,price_52w_high:558,price_52w_low:390},
+  {symbol:"NRSL",name:"Nepal Roofing Sheet",sector:"Manufacturing",pe:13.8,roe:9.5,debt_to_equity:2.4,revenue_growth_5y:7,profit_growth_5y:9,dividend_yield:1.6,market_cap:9800,price_current:385,price_52w_high:462,price_52w_low:323},
+  {symbol:"BGWT",name:"Bhagwati Steels",sector:"Manufacturing",pe:12.5,roe:8.8,debt_to_equity:2.6,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.4,market_cap:8200,price_current:322,price_52w_high:386,price_52w_low:270},
+  {symbol:"BBNL",name:"Bottlers Nepal Ltd",sector:"Manufacturing",pe:28.5,roe:22.0,debt_to_equity:1.1,revenue_growth_5y:18,profit_growth_5y:22,dividend_yield:3.5,market_cap:48000,price_current:2850,price_52w_high:3420,price_52w_low:2390},
+  {symbol:"NKCL",name:"Nepal Khadya Udhog",sector:"Manufacturing",pe:14.8,roe:10.2,debt_to_equity:2.2,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:1.7,market_cap:11000,price_current:438,price_52w_high:526,price_52w_low:367},
+  {symbol:"RIDI",name:"Ridi Hydropower",sector:"Manufacturing",pe:16.5,roe:11.5,debt_to_equity:2.0,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:1.8,market_cap:13500,price_current:512,price_52w_high:614,price_52w_low:429},
+  {symbol:"VLUCL",name:"Valley Isuzu Motors",sector:"Manufacturing",pe:11.8,roe:8.2,debt_to_equity:2.7,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.3,market_cap:7500,price_current:295,price_52w_high:354,price_52w_low:247},
+  {symbol:"NICKEL",name:"Nepal Iron & Steel",sector:"Manufacturing",pe:10.5,roe:7.2,debt_to_equity:2.9,revenue_growth_5y:4,profit_growth_5y:5,dividend_yield:1.1,market_cap:6200,price_current:255,price_52w_high:306,price_52w_low:214},
+  {symbol:"BTCL",name:"BTC Coal Traders",sector:"Manufacturing",pe:9.8,roe:6.5,debt_to_equity:3.1,revenue_growth_5y:4,profit_growth_5y:4,dividend_yield:1.0,market_cap:5500,price_current:225,price_52w_high:270,price_52w_low:189},
+  {symbol:"GRDL",name:"Gard Limited",sector:"Manufacturing",pe:11.2,roe:7.8,debt_to_equity:2.8,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:1.2,market_cap:6800,price_current:268,price_52w_high:322,price_52w_low:225},
+  {symbol:"NCPL",name:"Nepal Chloro Poly",sector:"Manufacturing",pe:13.5,roe:9.2,debt_to_equity:2.3,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.5,market_cap:9500,price_current:368,price_52w_high:442,price_52w_low:308},
+  {symbol:"SMFDB",name:"Smart Microfinance Bank",sector:"Manufacturing",pe:15.8,roe:11.5,debt_to_equity:2.0,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:1.8,market_cap:13000,price_current:495,price_52w_high:594,price_52w_low:415},
+  {symbol:"HTL",name:"Hatibaan Resort",sector:"Manufacturing",pe:8.5,roe:5.8,debt_to_equity:3.2,revenue_growth_5y:3,profit_growth_5y:3,dividend_yield:0.8,market_cap:4200,price_current:195,price_52w_high:234,price_52w_low:163},
+  {symbol:"SONA",name:"SONATA Finance",sector:"Manufacturing",pe:12.8,roe:9.0,debt_to_equity:2.5,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.4,market_cap:8000,price_current:315,price_52w_high:378,price_52w_low:264},
+  {symbol:"NIFRA",name:"Nepal Infrastructure Bank",sector:"Manufacturing",pe:20.5,roe:14.2,debt_to_equity:1.6,revenue_growth_5y:12,profit_growth_5y:15,dividend_yield:2.0,market_cap:20000,price_current:680,price_52w_high:816,price_52w_low:570},
+  {symbol:"JOSI",name:"Joshi Trading Company",sector:"Manufacturing",pe:10.2,roe:6.8,debt_to_equity:3.0,revenue_growth_5y:4,profit_growth_5y:5,dividend_yield:1.0,market_cap:5800,price_current:238,price_52w_high:286,price_52w_low:199},
+  {symbol:"BHBL",name:"Butwal Hydropower",sector:"Manufacturing",pe:22.8,roe:16.5,debt_to_equity:1.5,revenue_growth_5y:14,profit_growth_5y:17,dividend_yield:2.6,market_cap:30000,price_current:925,price_52w_high:1110,price_52w_low:775},
+  // TELECOM & TECHNOLOGY (8)
+  {symbol:"NCELL",name:"Ncell Axiata Limited",sector:"Telecom",pe:18.5,roe:28.5,debt_to_equity:0.5,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:4.2,market_cap:85000,price_current:640,price_52w_high:768,price_52w_low:537},
+  {symbol:"NTEL",name:"Nepal Telecom",sector:"Telecom",pe:16.2,roe:24.8,debt_to_equity:0.3,revenue_growth_5y:5,profit_growth_5y:6,dividend_yield:5.8,market_cap:120000,price_current:1580,price_52w_high:1896,price_52w_low:1324},
+  {symbol:"CHDC",name:"Chilime Data Centre",sector:"Telecom",pe:22.5,roe:18.2,debt_to_equity:0.8,revenue_growth_5y:20,profit_growth_5y:25,dividend_yield:1.5,market_cap:32000,price_current:1820,price_52w_high:2184,price_52w_low:1526},
+  {symbol:"NEPS",name:"NEPSE Technology",sector:"Telecom",pe:24.8,roe:20.5,debt_to_equity:0.6,revenue_growth_5y:22,profit_growth_5y:28,dividend_yield:1.2,market_cap:38000,price_current:2150,price_52w_high:2580,price_52w_low:1802},
+  {symbol:"FSSL",name:"F1Soft International",sector:"Telecom",pe:28.5,roe:25.2,debt_to_equity:0.4,revenue_growth_5y:25,profit_growth_5y:30,dividend_yield:1.0,market_cap:52000,price_current:2850,price_52w_high:3420,price_52w_low:2390},
+  {symbol:"ICTC",name:"ICT Nepal Solutions",sector:"Telecom",pe:20.5,roe:16.8,debt_to_equity:0.9,revenue_growth_5y:18,profit_growth_5y:22,dividend_yield:1.3,market_cap:26000,price_current:1480,price_52w_high:1776,price_52w_low:1240},
+  {symbol:"VTECH",name:"Vianet Communications",sector:"Telecom",pe:19.8,roe:15.5,debt_to_equity:1.0,revenue_growth_5y:16,profit_growth_5y:20,dividend_yield:1.2,market_cap:24000,price_current:1380,price_52w_high:1656,price_52w_low:1157},
+  {symbol:"WLINK",name:"WorldLink Communications",sector:"Telecom",pe:21.2,roe:17.2,debt_to_equity:0.85,revenue_growth_5y:19,profit_growth_5y:24,dividend_yield:1.1,market_cap:29000,price_current:1620,price_52w_high:1944,price_52w_low:1359},
+  // HOTELS & TOURISM (12)
+  {symbol:"SHL",name:"Soaltee Hotel Limited",sector:"Hotels",pe:28.5,roe:12.5,debt_to_equity:0.8,revenue_growth_5y:8,profit_growth_5y:15,dividend_yield:1.2,market_cap:18000,price_current:685,price_52w_high:822,price_52w_low:574},
+  {symbol:"YHL",name:"Yak & Yeti Hotels",sector:"Hotels",pe:24.2,roe:10.8,debt_to_equity:1.0,revenue_growth_5y:10,profit_growth_5y:18,dividend_yield:1.0,market_cap:15000,price_current:580,price_52w_high:696,price_52w_low:486},
+  {symbol:"KHL",name:"Kathmandu Holiday Inns",sector:"Hotels",pe:20.8,roe:9.2,debt_to_equity:1.2,revenue_growth_5y:8,profit_growth_5y:14,dividend_yield:0.9,market_cap:12000,price_current:498,price_52w_high:598,price_52w_low:418},
+  {symbol:"PHL",name:"Pokhara Resorts",sector:"Hotels",pe:18.5,roe:8.5,debt_to_equity:1.4,revenue_growth_5y:7,profit_growth_5y:12,dividend_yield:0.8,market_cap:9500,price_current:425,price_52w_high:510,price_52w_low:357},
+  {symbol:"NHPC2",name:"Nepal Hospitality Co.",sector:"Hotels",pe:22.5,roe:10.5,debt_to_equity:1.0,revenue_growth_5y:9,profit_growth_5y:16,dividend_yield:1.0,market_cap:13500,price_current:542,price_52w_high:650,price_52w_low:454},
+  {symbol:"BHTM",name:"Bhrikuti Hotel & Tourism",sector:"Hotels",pe:16.2,roe:7.5,debt_to_equity:1.6,revenue_growth_5y:6,profit_growth_5y:10,dividend_yield:0.7,market_cap:8000,price_current:368,price_52w_high:442,price_52w_low:308},
+  {symbol:"TRHM",name:"Taragaon Regency Hotels",sector:"Hotels",pe:25.8,roe:11.5,debt_to_equity:0.9,revenue_growth_5y:10,profit_growth_5y:17,dividend_yield:1.1,market_cap:16500,price_current:625,price_52w_high:750,price_52w_low:524},
+  {symbol:"MHTL",name:"Mustang Hotels",sector:"Hotels",pe:14.5,roe:6.8,debt_to_equity:1.8,revenue_growth_5y:5,profit_growth_5y:8,dividend_yield:0.6,market_cap:6500,price_current:298,price_52w_high:358,price_52w_low:250},
+  {symbol:"EYHL",name:"Eastern Himalayas Resorts",sector:"Hotels",pe:19.8,roe:9.0,debt_to_equity:1.3,revenue_growth_5y:8,profit_growth_5y:13,dividend_yield:0.9,market_cap:11000,price_current:465,price_52w_high:558,price_52w_low:390},
+  {symbol:"CNFL",name:"Chitwan National Forest",sector:"Hotels",pe:17.5,roe:8.0,debt_to_equity:1.5,revenue_growth_5y:7,profit_growth_5y:11,dividend_yield:0.8,market_cap:9000,price_current:405,price_52w_high:486,price_52w_low:340},
+  {symbol:"JHTL",name:"Jungle Hideaway Hotels",sector:"Hotels",pe:13.2,roe:5.8,debt_to_equity:2.0,revenue_growth_5y:4,profit_growth_5y:7,dividend_yield:0.5,market_cap:5500,price_current:252,price_52w_high:302,price_52w_low:211},
+  {symbol:"LHTL",name:"Lumbini Eco Resort",sector:"Hotels",pe:15.8,roe:7.2,debt_to_equity:1.7,revenue_growth_5y:6,profit_growth_5y:9,dividend_yield:0.7,market_cap:7200,price_current:332,price_52w_high:398,price_52w_low:278},
+  // MUTUAL FUNDS (25)
+  {symbol:"NMBSF1",name:"NMB Sulav Income Scheme",sector:"Mutual Fund",pe:null,roe:8.5,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.5,market_cap:5000,price_current:11.25,price_52w_high:12.5,price_52w_low:10.2},
+  {symbol:"NIBLSF1",name:"NIBL Samriddhi Fund",sector:"Mutual Fund",pe:null,roe:9.2,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:9,dividend_yield:9.2,market_cap:5500,price_current:12.1,price_52w_high:13.4,price_52w_low:11.0},
+  {symbol:"NIBLPF2",name:"NIBL Pragati Fund-2",sector:"Mutual Fund",pe:null,roe:8.8,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:8.8,market_cap:4800,price_current:11.6,price_52w_high:12.9,price_52w_low:10.5},
+  {symbol:"SIGS1",name:"Siddhartha Inv. Growth Scheme",sector:"Mutual Fund",pe:null,roe:10.2,debt_to_equity:0.0,revenue_growth_5y:10,profit_growth_5y:10,dividend_yield:10.2,market_cap:6000,price_current:13.4,price_52w_high:14.9,price_52w_low:12.2},
+  {symbol:"SIGS2",name:"Siddhartha Inv. Growth Scheme-2",sector:"Mutual Fund",pe:null,roe:9.8,debt_to_equity:0.0,revenue_growth_5y:10,profit_growth_5y:10,dividend_yield:9.8,market_cap:5800,price_current:12.9,price_52w_high:14.3,price_52w_low:11.7},
+  {symbol:"GIMES1",name:"GIBL Equity Fund",sector:"Mutual Fund",pe:null,roe:9.5,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:9,dividend_yield:9.5,market_cap:5500,price_current:12.5,price_52w_high:13.9,price_52w_low:11.4},
+  {symbol:"KMCDB",name:"Kumari Eq. Fund",sector:"Mutual Fund",pe:null,roe:8.2,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.2,market_cap:4500,price_current:10.8,price_52w_high:12.0,price_52w_low:9.8},
+  {symbol:"SAEF",name:"Sanima Equity Fund",sector:"Mutual Fund",pe:null,roe:9.0,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:9,dividend_yield:9.0,market_cap:5200,price_current:11.8,price_52w_high:13.1,price_52w_low:10.7},
+  {symbol:"SBCF",name:"Sunrise Balanced Fund",sector:"Mutual Fund",pe:null,roe:8.5,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.5,market_cap:4800,price_current:11.2,price_52w_high:12.4,price_52w_low:10.2},
+  {symbol:"PRSF",name:"Prabhu Select Fund",sector:"Mutual Fund",pe:null,roe:8.8,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:8.8,market_cap:5000,price_current:11.6,price_52w_high:12.9,price_52w_low:10.5},
+  {symbol:"NBSM",name:"NB Samriddhi Fund",sector:"Mutual Fund",pe:null,roe:7.8,debt_to_equity:0.0,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:7.8,market_cap:4200,price_current:10.2,price_52w_high:11.3,price_52w_low:9.3},
+  {symbol:"LEMF",name:"Laxmi Equity Fund",sector:"Mutual Fund",pe:null,roe:9.2,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:9,dividend_yield:9.2,market_cap:5400,price_current:12.1,price_52w_high:13.4,price_52w_low:11.0},
+  {symbol:"NMBHF1",name:"NMB Hybrid Fund L-1",sector:"Mutual Fund",pe:null,roe:8.0,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.0,market_cap:4600,price_current:10.5,price_52w_high:11.7,price_52w_low:9.5},
+  {symbol:"CTHF",name:"Citizens Top 20 Fund",sector:"Mutual Fund",pe:null,roe:10.5,debt_to_equity:0.0,revenue_growth_5y:10,profit_growth_5y:10,dividend_yield:10.5,market_cap:6200,price_current:13.8,price_52w_high:15.3,price_52w_low:12.5},
+  {symbol:"GRGEF",name:"Gurans Growth Fund",sector:"Mutual Fund",pe:null,roe:9.5,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:9.5,market_cap:5600,price_current:12.5,price_52w_high:13.9,price_52w_low:11.4},
+  {symbol:"NNBSF",name:"NNB Sustainable Fund",sector:"Mutual Fund",pe:null,roe:8.5,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.5,market_cap:5000,price_current:11.2,price_52w_high:12.4,price_52w_low:10.2},
+  {symbol:"MMCBF",name:"Mega Mutual Balanced Fund",sector:"Mutual Fund",pe:null,roe:8.2,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.2,market_cap:4700,price_current:10.8,price_52w_high:12.0,price_52w_low:9.8},
+  {symbol:"NMBMF2",name:"NMB Money Market Fund",sector:"Mutual Fund",pe:null,roe:7.5,debt_to_equity:0.0,revenue_growth_5y:7,profit_growth_5y:7,dividend_yield:7.5,market_cap:3800,price_current:9.8,price_52w_high:10.9,price_52w_low:8.9},
+  {symbol:"KDMF",name:"Kumari Dynamic Fund",sector:"Mutual Fund",pe:null,roe:9.8,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:9.8,market_cap:5800,price_current:12.9,price_52w_high:14.3,price_52w_low:11.7},
+  {symbol:"SAIF",name:"Sanima Active Income Fund",sector:"Mutual Fund",pe:null,roe:8.8,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:8.8,market_cap:5200,price_current:11.6,price_52w_high:12.9,price_52w_low:10.5},
+  {symbol:"CBEF",name:"Civil Bank Equity Fund",sector:"Mutual Fund",pe:null,roe:8.0,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.0,market_cap:4500,price_current:10.5,price_52w_high:11.7,price_52w_low:9.5},
+  {symbol:"SFEF",name:"Sunrise First Eq. Fund",sector:"Mutual Fund",pe:null,roe:9.2,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:9,dividend_yield:9.2,market_cap:5400,price_current:12.1,price_52w_high:13.4,price_52w_low:11.0},
+  {symbol:"PBCDF",name:"Prabhu Balanced Fund",sector:"Mutual Fund",pe:null,roe:8.5,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:8.5,market_cap:5000,price_current:11.2,price_52w_high:12.4,price_52w_low:10.2},
+  {symbol:"LGBSF",name:"Lumbini Growth Balanced",sector:"Mutual Fund",pe:null,roe:8.8,debt_to_equity:0.0,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:8.8,market_cap:5200,price_current:11.6,price_52w_high:12.9,price_52w_low:10.5},
+  {symbol:"ETMF1",name:"EBL Terregen Mutual Fund",sector:"Mutual Fund",pe:null,roe:9.5,debt_to_equity:0.0,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:9.5,market_cap:5600,price_current:12.5,price_52w_high:13.9,price_52w_low:11.4},
+  // TRADING (10)
+  {symbol:"CBBL",name:"Chhimek Bikas Bank",sector:"Trading",pe:13.8,roe:17.5,debt_to_equity:4.2,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.2,market_cap:9500,price_current:1940,price_52w_high:2328,price_52w_low:1625},
+  {symbol:"MBLBSL",name:"Mahila Bikas Laghubitta",sector:"Trading",pe:14.2,roe:18.2,debt_to_equity:4.0,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:3.4,market_cap:10500,price_current:2150,price_52w_high:2580,price_52w_low:1800},
+  {symbol:"SWBBL2",name:"Swabalamban Bikas Bank",sector:"Trading",pe:12.8,roe:16.2,debt_to_equity:4.5,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:3.0,market_cap:8500,price_current:1760,price_52w_high:2112,price_52w_low:1475},
+  {symbol:"VLBSL",name:"Vijaya Laghubitta Bittiya",sector:"Trading",pe:12.5,roe:15.8,debt_to_equity:4.6,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.8,market_cap:8200,price_current:1680,price_52w_high:2016,price_52w_low:1408},
+  {symbol:"MMFDB",name:"Mahuli Multifinance Dev Bank",sector:"Trading",pe:11.8,roe:15.0,debt_to_equity:4.8,revenue_growth_5y:10,profit_growth_5y:11,dividend_yield:2.6,market_cap:7800,price_current:1580,price_52w_high:1896,price_52w_low:1325},
+  {symbol:"KLBSL",name:"Kalika Laghubitta",sector:"Trading",pe:11.2,roe:14.2,debt_to_equity:5.0,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:2.4,market_cap:7200,price_current:1460,price_52w_high:1752,price_52w_low:1224},
+  {symbol:"GILBSL",name:"Ganapati Laghubitta",sector:"Trading",pe:10.8,roe:13.5,debt_to_equity:5.2,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:2.2,market_cap:6800,price_current:1380,price_52w_high:1656,price_52w_low:1157},
+  {symbol:"FOWAD",name:"Fowad Laghubitta",sector:"Trading",pe:10.5,roe:13.0,debt_to_equity:5.4,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.1,market_cap:6500,price_current:1320,price_52w_high:1584,price_52w_low:1107},
+  {symbol:"NADEP",name:"NADEP Laghubitta",sector:"Trading",pe:10.2,roe:12.5,debt_to_equity:5.6,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.0,market_cap:6200,price_current:1260,price_52w_high:1512,price_52w_low:1058},
+  {symbol:"SLBSL",name:"Sunrise Laghubitta",sector:"Trading",pe:9.8,roe:12.0,debt_to_equity:5.8,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.9,market_cap:5900,price_current:1200,price_52w_high:1440,price_52w_low:1008},
+  // OTHERS (includes Debentures, Bonds, etc.) (11)
+  {symbol:"NEPSE",name:"NEPSE Index ETF",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:8,profit_growth_5y:8,dividend_yield:2.5,market_cap:15000,price_current:214.8,price_52w_high:248,price_52w_low:185},
+  {symbol:"NCMSL",name:"Nepal Coal & Mining",sector:"Others",pe:8.5,roe:5.2,debt_to_equity:3.5,revenue_growth_5y:3,profit_growth_5y:2,dividend_yield:0.8,market_cap:3500,price_current:125,price_52w_high:150,price_52w_low:105},
+  {symbol:"NRIC2",name:"Nepal Reinsurance",sector:"Others",pe:21.5,roe:14.5,debt_to_equity:0.5,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.0,market_cap:28000,price_current:1150,price_52w_high:1380,price_52w_low:963},
+  {symbol:"SBLL",name:"Sanima Bank Debentures",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:9.5,market_cap:2000,price_current:1005,price_52w_high:1010,price_52w_low:998},
+  {symbol:"NABIL08",name:"Nabil Bank Debenture 2085",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:9.0,market_cap:2500,price_current:1002,price_52w_high:1008,price_52w_low:996},
+  {symbol:"SBICD85",name:"Nepal SBI Debenture 2085",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:8.5,market_cap:1800,price_current:1001,price_52w_high:1006,price_52w_low:995},
+  {symbol:"GBIMK1",name:"GIBL Debenture 2083",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:8.75,market_cap:2200,price_current:1003,price_52w_high:1009,price_52w_low:997},
+  {symbol:"PCBLD84",name:"Prime Comm. Bank Deb 2084",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:9.25,market_cap:2100,price_current:1004,price_52w_high:1010,price_52w_low:997},
+  {symbol:"CGBL",name:"Citizen Bank Debenture",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:9.0,market_cap:2000,price_current:1003,price_52w_high:1008,price_52w_low:996},
+  {symbol:"NMBDB1",name:"NMB Debenture 2082",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:8.5,market_cap:1900,price_current:1002,price_52w_high:1007,price_52w_low:995},
+  {symbol:"KDBL1",name:"Kumari Bank Debenture",sector:"Others",pe:null,roe:null,debt_to_equity:0,revenue_growth_5y:0,profit_growth_5y:0,dividend_yield:9.25,market_cap:2100,price_current:1004,price_52w_high:1010,price_52w_low:997},
+  // MICROFINANCE (add remaining to reach 271)
+  {symbol:"JSLBS",name:"Janautthan Samudayik Laghubitta",sector:"Microfinance",pe:13.5,roe:17.0,debt_to_equity:4.3,revenue_growth_5y:12,profit_growth_5y:13,dividend_yield:3.1,market_cap:9000,price_current:1840,price_52w_high:2208,price_52w_low:1542},
+  {symbol:"DDBL",name:"Deprosc Dev. Bank Limited",sector:"Microfinance",pe:12.8,roe:16.5,debt_to_equity:4.5,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:2.9,market_cap:8600,price_current:1760,price_52w_high:2112,price_52w_low:1475},
+  {symbol:"RMDC",name:"Rural Microfinance Dev. Centre",sector:"Microfinance",pe:14.8,roe:18.5,debt_to_equity:4.0,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:3.5,market_cap:10500,price_current:2120,price_52w_high:2544,price_52w_low:1778},
+  {symbol:"MLBSL2",name:"Mithila Laghubitta",sector:"Microfinance",pe:11.5,roe:14.8,debt_to_equity:5.0,revenue_growth_5y:10,profit_growth_5y:11,dividend_yield:2.6,market_cap:7500,price_current:1520,price_52w_high:1824,price_52w_low:1275},
+  {symbol:"SLBSL2",name:"Sahara Laghubitta",sector:"Microfinance",pe:11.0,roe:14.2,debt_to_equity:5.2,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:2.4,market_cap:7200,price_current:1460,price_52w_high:1752,price_52w_low:1224},
+  {symbol:"ULBSL",name:"Unnati Laghubitta",sector:"Microfinance",pe:10.8,roe:13.8,debt_to_equity:5.3,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:2.3,market_cap:7000,price_current:1420,price_52w_high:1704,price_52w_low:1190},
+  {symbol:"GLBSL",name:"Grameen Laghubitta",sector:"Microfinance",pe:13.2,roe:16.8,debt_to_equity:4.4,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:3.0,market_cap:8800,price_current:1800,price_52w_high:2160,price_52w_low:1510},
+  {symbol:"NMLBBL",name:"Naya Nepal Laghubitta",sector:"Microfinance",pe:10.5,roe:13.2,debt_to_equity:5.5,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.2,market_cap:6800,price_current:1340,price_52w_high:1608,price_52w_low:1123},
+  {symbol:"KLBSL2",name:"Kisan Laghubitta",sector:"Microfinance",pe:10.2,roe:12.8,debt_to_equity:5.6,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.1,market_cap:6600,price_current:1300,price_52w_high:1560,price_52w_low:1090},
+  {symbol:"SMFBS",name:"Sana Kisan Bikas Bank",sector:"Microfinance",pe:15.5,roe:19.5,debt_to_equity:3.8,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:3.8,market_cap:12000,price_current:2450,price_52w_high:2940,price_52w_low:2054},
+  {symbol:"NICLBSL",name:"NIC Asia Laghubitta",sector:"Microfinance",pe:14.2,roe:18.0,debt_to_equity:4.1,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.3,market_cap:9800,price_current:1980,price_52w_high:2376,price_52w_low:1660},
+  {symbol:"ALBL",name:"Asha Laghubitta",sector:"Microfinance",pe:10.0,roe:12.5,debt_to_equity:5.7,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.0,market_cap:6400,price_current:1260,price_52w_high:1512,price_52w_low:1058},
+  {symbol:"BLBL",name:"Bright Laghubitta",sector:"Microfinance",pe:9.8,roe:12.2,debt_to_equity:5.8,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.9,market_cap:6200,price_current:1220,price_52w_high:1464,price_52w_low:1023},
+  {symbol:"SDLBS",name:"Sadhana Laghubitta",sector:"Microfinance",pe:9.5,roe:11.8,debt_to_equity:6.0,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.8,market_cap:5900,price_current:1180,price_52w_high:1416,price_52w_low:989},
+  {symbol:"GMFBS",name:"Global Microfinance",sector:"Microfinance",pe:11.8,roe:15.2,debt_to_equity:4.8,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:2.7,market_cap:8000,price_current:1620,price_52w_high:1944,price_52w_low:1359},
+  {symbol:"RFLBS",name:"Reliance Finance Laghubitta",sector:"Microfinance",pe:9.2,roe:11.5,debt_to_equity:6.2,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.7,market_cap:5600,price_current:1140,price_52w_high:1368,price_52w_low:956},
+  {symbol:"SWBLBS",name:"Swablamban Laghubitta",sector:"Microfinance",pe:9.0,roe:11.2,debt_to_equity:6.3,revenue_growth_5y:6,profit_growth_5y:7,dividend_yield:1.6,market_cap:5400,price_current:1100,price_52w_high:1320,price_52w_low:922},
+  {symbol:"NSBL",name:"Nepal Sewa Laghubitta",sector:"Microfinance",pe:10.5,roe:13.5,debt_to_equity:5.4,revenue_growth_5y:9,profit_growth_5y:10,dividend_yield:2.3,market_cap:7000,price_current:1420,price_52w_high:1704,price_52w_low:1190},
+  {symbol:"DDBL2",name:"Dhaulagiri Laghubitta",sector:"Microfinance",pe:9.8,roe:12.5,debt_to_equity:5.7,revenue_growth_5y:8,profit_growth_5y:9,dividend_yield:2.0,market_cap:6500,price_current:1280,price_52w_high:1536,price_52w_low:1074},
+  {symbol:"MLBL",name:"Manushi Laghubitta",sector:"Microfinance",pe:9.5,roe:12.0,debt_to_equity:5.9,revenue_growth_5y:7,profit_growth_5y:8,dividend_yield:1.8,market_cap:6100,price_current:1220,price_52w_high:1464,price_52w_low:1023},
+];
+
+// Compute score + timing signal for each company
+function computeScore(c){
+  if(c.sector==='Mutual Fund'||c.sector==='Others')return {score:Math.round(50+c.dividend_yield*2),timing:{label:'wait',class:'b-wait'}};
+  let s=0;
+  if(c.roe>=20)s+=25;else if(c.roe>=15)s+=18;else if(c.roe>=10)s+=12;else if(c.roe>=5)s+=6;
+  if(c.pe&&c.pe<=12)s+=20;else if(c.pe&&c.pe<=18)s+=15;else if(c.pe&&c.pe<=25)s+=10;else if(c.pe)s+=5;
+  if(c.profit_growth_5y>=18)s+=20;else if(c.profit_growth_5y>=12)s+=15;else if(c.profit_growth_5y>=7)s+=10;else s+=5;
+  if(c.dividend_yield>=3.5)s+=15;else if(c.dividend_yield>=2.5)s+=11;else if(c.dividend_yield>=1.5)s+=7;else s+=3;
+  const pct52=(c.price_current/c.price_52w_high)*100;
+  if(pct52<70)s+=12;else if(pct52<80)s+=9;else if(pct52<90)s+=6;else s+=2;
+  if(c.debt_to_equity<2)s+=8;else if(c.debt_to_equity<4)s+=5;else s+=2;
+  s=Math.min(100,Math.max(0,s));
+  const pctFrom52=(((c.price_current-c.price_52w_high)/c.price_52w_high)*100).toFixed(1);
+  let timing;
+  if(s>=70&&pct52<85){timing={label:'buy',class:'b-buy'};}
+  else if(s>=55&&pct52<92){timing={label:'watch',class:'b-watch'};}
+  else if(s>=40){timing={label:'wait',class:'b-wait'};}
+  else{timing={label:'avoid',class:'b-avoid'};}
+  return {score:s,timing,pct52wHigh:+pctFrom52};
+}
+
+const COMPANIES=ALL_COMPANIES.map((c,i)=>{
+  const {score,timing,pct52wHigh}=computeScore(c);
+  return{...c,score,timing,pct52wHigh,rank:i+1};
+}).sort((a,b)=>b.score-a.score).map((c,i)=>({...c,rank:i+1}));
+
+// ─── STATE ───
+let currentSector='All';
+let currentSort={col:'score',dir:'desc'};
+let currentView='table';
+let filtered=[...COMPANIES];
+
+// ─── SECTOR LIST ───
+const SECTORS=['All',...[...new Set(COMPANIES.map(c=>c.sector))].sort()];
+const SECTOR_COLORS={
+  Banking:'rgba(61,127,255,.15)',Finance:'rgba(0,214,143,.1)',Hydropower:'rgba(240,185,11,.1)',
+  Insurance:'rgba(246,70,93,.1)',Manufacturing:'rgba(138,149,170,.1)',Telecom:'rgba(61,127,255,.2)',
+  Hotels:'rgba(240,185,11,.15)',Microfinance:'rgba(0,214,143,.15)','Mutual Fund':'rgba(90,159,255,.1)',
+  Trading:'rgba(246,70,93,.15)',Others:'rgba(138,149,170,.15)'
+};
+
+function buildTabs(){
+  const tabs=document.getElementById('sectorTabs');
+  tabs.innerHTML=SECTORS.map(s=>{
+    const cnt=s==='All'?COMPANIES.length:COMPANIES.filter(c=>c.sector===s).length;
+    return`<div class="stab${s==='All'?' active':''}" onclick="setSector('${s}')" id="stab-${s.replace(/\s/g,'_')}">${s}<span class="stab-count">${cnt}</span></div>`;
+  }).join('');
+}
+
+function setSector(s){
+  currentSector=s;
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('stab-'+s.replace(/\s/g,'_')).classList.add('active');
+  applyFilters();
+}
+
+function applyFilters(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const sig=document.getElementById('signalSel').value;
+  filtered=COMPANIES.filter(c=>{
+    if(currentSector!=='All'&&c.sector!==currentSector)return false;
+    if(q&&!c.symbol.toLowerCase().includes(q)&&!c.name.toLowerCase().includes(q)&&!c.sector.toLowerCase().includes(q))return false;
+    if(sig&&c.timing.label!==sig)return false;
+    return true;
+  });
+  sortFiltered();
+  renderStats();
+  renderTable();
+  renderGrid();
+  document.getElementById('countBadge').textContent=`${filtered.length} companies`;
+}
+
+function sortFiltered(){
+  const s=document.getElementById('sortSel').value;
+  const [col,dir]=s.split('_');
+  filtered.sort((a,b)=>{
+    let av=a[col==='symbol'?'symbol':col==='name'?'name':col==='pe'?'pe':col==='roe'?'roe':col==='price'?'price_current':col==='div'?'dividend_yield':col];
+    let bv=b[col==='symbol'?'symbol':col==='name'?'name':col==='pe'?'pe':col==='roe'?'roe':col==='price'?'price_current':col==='div'?'dividend_yield':col];
+    if(av===null||av===undefined)av=dir==='asc'?Infinity:-Infinity;
+    if(bv===null||bv===undefined)bv=dir==='asc'?Infinity:-Infinity;
+    if(typeof av==='string')return dir==='asc'?av.localeCompare(bv):bv.localeCompare(av);
+    return dir==='asc'?av-bv:bv-av;
+  });
+}
+
+function sortBy(col){
+  if(currentSort.col===col){currentSort.dir=currentSort.dir==='desc'?'asc':'desc';}
+  else{currentSort={col,dir:'desc'};}
+  // update sort select
+  const sortMap={score:'score_desc',symbol:'symbol_asc',name:'symbol_asc',sector:'symbol_asc',price_current:'price_desc',pe:'pe_asc',roe:'roe_desc',dividend_yield:'div_desc',market_cap:'price_desc',pct52wHigh:'price_asc'};
+  applyFilters();
+}
+
+function clearFilters(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('signalSel').value='';
+  document.getElementById('sortSel').value='score_desc';
+  currentSector='All';
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('stab-All').classList.add('active');
+  applyFilters();
+}
+
+function renderStats(){
+  const buy=COMPANIES.filter(c=>c.timing.label==='buy').length;
+  const watch=COMPANIES.filter(c=>c.timing.label==='watch').length;
+  const wait=COMPANIES.filter(c=>c.timing.label==='wait').length;
+  const avoid=COMPANIES.filter(c=>c.timing.label==='avoid').length;
+  document.getElementById('st-total').textContent=filtered.length;
+  document.getElementById('st-buy').textContent=buy;
+  document.getElementById('st-watch').textContent=watch;
+  document.getElementById('st-wait').textContent=wait;
+  document.getElementById('st-avoid').textContent=avoid;
+}
+
+// Score color
+function scoreColor(s){return s>=70?'var(--green)':s>=50?'var(--gold)':s>=30?'var(--text2)':'var(--red)';}
+function sectorTag(sector){
+  const c=SECTOR_COLORS[sector]||'rgba(138,149,170,.1)';
+  return`<span style="background:${c};color:var(--text);padding:2px 6px;border-radius:3px;font-size:9px;font-weight:600;">${sector}</span>`;
+}
+
+function renderTable(){
+  const tbody=document.getElementById('tableBody');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="15" style="text-align:center;padding:40px;color:var(--text2)">No companies match your filters</td></tr>`;return;}
+  tbody.innerHTML=filtered.map((c,i)=>`
+    <tr onclick="openDetail('${c.symbol}')">
+      <td>${i+1}</td>
+      <td style="color:var(--gold);font-weight:600;font-family:var(--display)">${c.symbol}</td>
+      <td class="name-cell">${c.name}</td>
+      <td>${sectorTag(c.sector)}</td>
+      <td>
+        <div class="sbar">
+          <div class="sbar-track"><div class="sbar-fill" style="width:${c.score}%;background:${scoreColor(c.score)}"></div></div>
+          <span class="sbar-num" style="color:${scoreColor(c.score)}">${c.score}</span>
+        </div>
+      </td>
+      <td><span class="badge ${c.timing.class}">${c.timing.label}</span></td>
+      <td>${c.price_current!=null?'NPR '+c.price_current.toLocaleString():'-'}</td>
+      <td>${c.pe?c.pe.toFixed(1):'—'}</td>
+      <td style="color:${c.roe>=15?'var(--green)':c.roe>=8?'var(--text)':'var(--red)'}">${c.roe?c.roe.toFixed(1)+'%':'—'}</td>
+      <td>${c.debt_to_equity!=null?c.debt_to_equity.toFixed(1):'—'}</td>
+      <td style="color:${c.profit_growth_5y>=15?'var(--green)':c.profit_growth_5y>=8?'var(--text)':'var(--text2)'}">${c.profit_growth_5y?'+'+c.profit_growth_5y+'%':'—'}</td>
+      <td style="color:var(--gold)">${c.dividend_yield?c.dividend_yield.toFixed(1)+'%':'—'}</td>
+      <td>${c.market_cap?(c.market_cap/1000).toFixed(0)+'B':'—'}</td>
+      <td style="color:${c.pct52wHigh>-10?'var(--green)':c.pct52wHigh>-20?'var(--gold)':'var(--red)'}">${c.pct52wHigh!=null?c.pct52wHigh+'%':'—'}</td>
+      <td><button class="ctrl-btn" style="padding:2px 8px;font-size:9px" onclick="event.stopPropagation();openDetail('${c.symbol}')">Detail →</button></td>
+    </tr>
+  `).join('');
+}
+
+function renderGrid(){
+  if(currentView!=='grid')return;
+  const grid=document.getElementById('gridBody');
+  if(!filtered.length){grid.innerHTML=`<div class="no-results"><h3>No Results</h3><p>Try adjusting your filters</p></div>`;return;}
+  grid.innerHTML=filtered.map(c=>`
+    <div class="co-card" onclick="openDetail('${c.symbol}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="co-sym">${c.symbol}</div>
+        <span class="badge ${c.timing.class}" style="font-size:8px">${c.timing.label}</span>
+      </div>
+      <div class="co-name">${c.name}</div>
+      <div class="co-score-bar"><div class="co-score-fill" style="width:${c.score}%;background:${scoreColor(c.score)}"></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="co-price">${c.price_current?'NPR '+c.price_current.toLocaleString():'-'}</div>
+        <div class="co-chg" style="color:${scoreColor(c.score)}">${c.score}/100</div>
+      </div>
+      <div class="co-foot" style="margin-top:6px">
+        <span>${c.pe?'P/E '+c.pe.toFixed(1):'MF/Bond'}</span>
+        <span style="color:var(--gold)">${c.dividend_yield?c.dividend_yield.toFixed(1)+'% div':''}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setView(v){
+  currentView=v;
+  document.getElementById('vt-table').classList.toggle('active',v==='table');
+  document.getElementById('vt-grid').classList.toggle('active',v==='grid');
+  document.getElementById('tableView').style.display=v==='table'?'block':'none';
+  document.getElementById('gridView').style.display=v==='grid'?'block':'none';
+  if(v==='grid')renderGrid();
+}
+
+// ─── DETAIL PANEL ───
+function openDetail(sym){
+  const c=COMPANIES.find(x=>x.symbol===sym);if(!c)return;
+  const sc=scoreColor(c.score);
+  const reasons={
+    buy:`${c.symbol} shows strong fundamentals with ROE of ${c.roe}%, trading at ${c.pct52wHigh}% from its 52-week high. P/E of ${c.pe||'N/A'} suggests reasonable valuation. Consider accumulating on dips.`,
+    watch:`${c.symbol} has decent fundamentals (ROE ${c.roe}%) but valuation timing is mixed. Watch for a better entry point — currently ${c.pct52wHigh}% from 52-week high.`,
+    wait:`${c.symbol} fundamentals need improvement or valuation is stretched. ROE at ${c.roe}% and score of ${c.score}/100. Wait for improvement before investing.`,
+    avoid:`${c.symbol} scores ${c.score}/100. Weak fundamentals or poor momentum. ROE of ${c.roe}% is below threshold. Avoid until fundamentals improve significantly.`
+  };
+  document.getElementById('detailContent').innerHTML=`
+    <div class="dp-header">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="dp-sym">${c.symbol}</div>
+          <div class="dp-name">${c.name}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="dp-sector">${c.sector}</span>
+            <span class="badge ${c.timing.class}">${c.timing.label.toUpperCase()}</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text)">${c.price_current?'NPR '+c.price_current.toLocaleString():'-'}</div>
+          <div style="font-size:10px;color:var(--text2)">${c.pct52wHigh!=null?c.pct52wHigh+'% from 52W high':''}</div>
+        </div>
+      </div>
+    </div>
+    <div class="dp-score" style="color:${sc}">${c.score}<span style="font-size:16px;color:var(--text2);font-family:var(--mono)">/100</span><div style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:4px">Fundamental Score</div></div>
+    <div class="timing-panel tp-${c.timing.label}">
+      <div class="tp-title" style="color:${sc}">${c.timing.label==='buy'?'✅ Good Entry':c.timing.label==='watch'?'👀 Watch for Entry':c.timing.label==='wait'?'⏳ Wait for Better Setup':'⛔ Avoid Now'}</div>
+      <div class="tp-reason">${reasons[c.timing.label]||''}</div>
+    </div>
+    <div class="met-grid">
+      <div class="met-item"><div class="met-key">Current Price</div><div class="met-val">NPR ${c.price_current?c.price_current.toLocaleString():'-'}</div></div>
+      <div class="met-item"><div class="met-key">P/E Ratio</div><div class="met-val" style="color:${c.pe&&c.pe<18?'var(--green)':'var(--text)'}">${c.pe?c.pe.toFixed(1):'N/A'}</div></div>
+      <div class="met-item"><div class="met-key">ROE %</div><div class="met-val" style="color:${c.roe>=15?'var(--green)':c.roe>=8?'var(--text)':'var(--red)'}">${c.roe?c.roe.toFixed(1)+'%':'—'}</div></div>
+      <div class="met-item"><div class="met-key">Debt / Equity</div><div class="met-val" style="color:${c.debt_to_equity<3?'var(--green)':c.debt_to_equity<6?'var(--gold)':'var(--red)'}">${c.debt_to_equity!=null?c.debt_to_equity.toFixed(1):'—'}</div></div>
+      <div class="met-item"><div class="met-key">5Y Profit Growth</div><div class="met-val" style="color:${c.profit_growth_5y>=12?'var(--green)':'var(--text)'}">${c.profit_growth_5y?'+'+c.profit_growth_5y+'%':'—'}</div></div>
+      <div class="met-item"><div class="met-key">5Y Revenue Growth</div><div class="met-val">${c.revenue_growth_5y?'+'+c.revenue_growth_5y+'%':'—'}</div></div>
+      <div class="met-item"><div class="met-key">Dividend Yield</div><div class="met-val" style="color:var(--gold)">${c.dividend_yield?c.dividend_yield.toFixed(1)+'%':'—'}</div></div>
+      <div class="met-item"><div class="met-key">Market Cap</div><div class="met-val">${c.market_cap?(c.market_cap>=1000?(c.market_cap/1000).toFixed(1)+'B':''+c.market_cap+'M'):'—'}</div></div>
+      <div class="met-item"><div class="met-key">52W High</div><div class="met-val">NPR ${c.price_52w_high?c.price_52w_high.toLocaleString():'-'}</div></div>
+      <div class="met-item"><div class="met-key">52W Low</div><div class="met-val">NPR ${c.price_52w_low?c.price_52w_low.toLocaleString():'-'}</div></div>
+    </div>
+    <div style="margin-top:8px">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">52-Week Price Range</div>
+      <div style="position:relative;height:8px;background:var(--border2);border-radius:4px;margin-bottom:4px">
+        <div style="position:absolute;left:0;height:100%;width:${((c.price_current-c.price_52w_low)/(c.price_52w_high-c.price_52w_low)*100).toFixed(1)}%;background:linear-gradient(90deg,var(--red),var(--gold),var(--green));border-radius:4px"></div>
+        <div style="position:absolute;top:-3px;left:${((c.price_current-c.price_52w_low)/(c.price_52w_high-c.price_52w_low)*100).toFixed(1)}%;transform:translateX(-50%);width:14px;height:14px;background:var(--text);border-radius:50%;border:2px solid var(--bg)"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--text2)">
+        <span>Low: NPR ${c.price_52w_low?.toLocaleString()}</span>
+        <span style="color:var(--text)">Current: NPR ${c.price_current?.toLocaleString()}</span>
+        <span>High: NPR ${c.price_52w_high?.toLocaleString()}</span>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="font-size:10px;color:var(--text2);text-align:center;line-height:1.6">⚠ Research tool only. Not financial advice. Always do your own due diligence before investing.</div>
+    </div>
+  `;
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('detailModal').classList.remove('open');}
+function closeDetail(e){if(e.target===document.getElementById('detailModal'))closeModal();}
+
+// ─── TICKER ───
+const TICKS=[
+  {s:'NABIL',p:1240,c:1.2},{s:'NICA',p:840,c:-0.4},{s:'UPPER',p:980,c:0.8},
+  {s:'CHILIME',p:2640,c:2.1},{s:'NLIC',p:4200,c:-1.3},{s:'NTEL',p:1580,c:0.6},
+  {s:'EBL',p:2800,c:0.9},{s:'GBIME',p:195,c:0.3},{s:'SHIVAM',p:760,c:2.2},
+  {s:'FSSL',p:2850,c:3.1},{s:'NCELL',p:640,c:-0.2},{s:'CBBL',p:1940,c:1.4},
+  {s:'NMBMF',p:1680,c:-0.7},{s:'BBNL',p:2850,c:1.8},{s:'SHL',p:685,c:0.5}
+];
+const d=[...TICKS,...TICKS];
+document.getElementById('topTicker').innerHTML=d.map(t=>`
+  <span class="t-item"><span class="t-sym">${t.s}</span><span class="t-p">${t.p.toLocaleString()}</span><span class="${t.c>0?'up':'dn'}">${t.c>0?'▲':'▼'}${Math.abs(t.c)}%</span></span>
+`).join('');
+
+// ─── EXPORT ───
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const csv=['Symbol,Name,Sector,Score,Signal,Price,PE,ROE%,DE,ProfitG%,DivYield%,MarketCap,52WH,52WL'].concat(
+    filtered.map(c=>`${c.symbol},"${c.name}",${c.sector},${c.score},${c.timing.label},${c.price_current||''},${c.pe||''},${c.roe||''},${c.debt_to_equity||''},${c.profit_growth_5y||''},${c.dividend_yield||''},${c.market_cap||''},${c.price_52w_high||''},${c.price_52w_low||''}`)
+  ).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='nepse_all_companies.csv';a.click();
+});
+
+// ─── CLOCK ───
+setInterval(()=>{document.getElementById('liveTime').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});},1000);
+
+// ─── INIT ───
+buildTabs();
+applyFilters();
+</script>
+</body>
+</html>
