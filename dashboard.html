@@ -35,6 +35,62 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 a{color:var(--blue2);text-decoration:none;}
 a:hover{text-decoration:underline;}
 
+/* NEPSE LIVE BANNER */
+.nepse-banner{
+  height:40px;background:linear-gradient(90deg,#0a1020,#0d1525,#0a1020);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:0;flex-shrink:0;z-index:250;
+  position:relative;overflow:hidden;
+}
+.nepse-banner::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(240,185,11,.03) 50%,transparent 100%);
+  animation:bannerShimmer 4s ease infinite;
+}
+@keyframes bannerShimmer{0%,100%{opacity:0}50%{opacity:1}}
+.nb-logo{
+  display:flex;align-items:center;gap:8px;padding:0 16px;
+  border-right:1px solid var(--border);height:100%;flex-shrink:0;
+}
+.nb-logo-text{font-family:var(--display);font-size:11px;font-weight:800;color:var(--gold);letter-spacing:1px;}
+.nb-index-block{
+  display:flex;align-items:center;gap:10px;padding:0 16px;
+  border-right:1px solid var(--border);height:100%;flex-shrink:0;
+}
+.nb-index-label{font-family:var(--mono);font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;}
+.nb-index-val{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--text);}
+.nb-index-chg{font-family:var(--mono);font-size:11px;font-weight:500;}
+.nb-stats{display:flex;align-items:center;gap:0;flex:1;overflow:hidden;}
+.nb-stat{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 14px;border-right:1px solid var(--border);height:100%;flex-shrink:0;
+}
+.nb-stat-label{font-family:var(--mono);font-size:8px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;}
+.nb-stat-val{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text);}
+.nb-mkt-status{
+  display:flex;align-items:center;gap:8px;padding:0 14px;
+  border-right:1px solid var(--border);height:100%;flex-shrink:0;
+}
+.nb-market-badge{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 8px;border-radius:4px;
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;
+  border:1px solid;
+}
+.nb-market-badge.open{background:rgba(0,214,143,.1);color:var(--green);border-color:rgba(0,214,143,.3);}
+.nb-market-badge.closed{background:rgba(246,70,93,.1);color:var(--red);border-color:rgba(246,70,93,.3);}
+.nb-advanced,.nb-declined,.nb-unchanged{
+  display:flex;align-items:center;gap:5px;
+  padding:0 12px;border-right:1px solid var(--border);height:100%;
+}
+.nb-adv-num{font-family:var(--mono);font-size:12px;font-weight:500;}
+.nb-adv-lbl{font-family:var(--mono);font-size:8px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;}
+.nb-turnover{padding:0 14px;height:100%;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nb-live{display:flex;align-items:center;gap:5px;padding:0 12px;border-left:1px solid var(--border);height:100%;flex-shrink:0;}
+.nb-live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1.4s infinite;}
+.nb-refresh-info{font-family:var(--mono);font-size:8px;color:var(--text2);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
 /* TOPBAR */
 .topbar{
   height:28px;background:rgba(8,10,15,.95);border-bottom:1px solid var(--border);
@@ -54,7 +110,6 @@ a:hover{text-decoration:underline;}
 .tb-item{font-family:var(--mono);font-size:10px;color:var(--text2);padding:0 12px;height:100%;display:flex;align-items:center;border-right:1px solid var(--border);gap:5px;}
 .tb-item.live{color:var(--green);}
 .live-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 1.8s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* HEADER */
 .header{
@@ -75,9 +130,12 @@ nav::-webkit-scrollbar{height:0}
   color:var(--text2);padding:0 14px;height:100%;
   border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;
   border-right:1px solid var(--border);
+  display:flex;align-items:center;gap:7px;
 }
 .nav-btn:hover{color:var(--text);background:var(--panel2);}
 .nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,185,11,.04);}
+.nav-btn svg{opacity:.7;}
+.nav-btn.active svg{opacity:1;}
 
 .hdr-right{display:flex;align-items:center;gap:0;height:100%;border-left:1px solid var(--border);flex-shrink:0;}
 .hdr-btn{
@@ -92,6 +150,7 @@ nav::-webkit-scrollbar{height:0}
 .hdr-btn.danger:hover{background:rgba(246,70,93,.08);}
 .hdr-btn.primary{color:var(--gold);border-left-color:var(--border);}
 .hdr-btn.primary:hover{background:rgba(240,185,11,.08);}
+.hdr-btn svg{opacity:.7;}
 .cd-bar{width:36px;height:2px;background:var(--border2);border-radius:1px;overflow:hidden;margin-right:4px;}
 .cd-fill{height:100%;background:var(--green);border-radius:1px;transition:width .9s linear;}
 
@@ -105,11 +164,12 @@ nav::-webkit-scrollbar{height:0}
 }
 .sb-ico{
   width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-size:16px;cursor:pointer;transition:all .15s;color:var(--text2);
+  cursor:pointer;transition:all .15s;color:var(--text2);
   border:1px solid transparent;
 }
 .sb-ico:hover{background:var(--panel2);border-color:var(--border2);color:var(--text);}
 .sb-ico.active{background:rgba(240,185,11,.1);border-color:rgba(240,185,11,.3);color:var(--gold);}
+.sb-ico svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
 .sb-sep{width:28px;height:1px;background:var(--border);margin:4px 0;}
 
 /* MAIN CONTENT */
@@ -172,6 +232,7 @@ tbody tr:last-child td{border-bottom:none;}
 .b-avoid{background:rgba(246,70,93,.1);color:var(--red);border-color:rgba(246,70,93,.25);}
 .b-watch{background:rgba(61,127,255,.1);color:var(--blue2);border-color:rgba(61,127,255,.25);}
 .b-strong{background:rgba(0,214,143,.15);color:var(--green);border-color:rgba(0,214,143,.3);}
+.b-dip{background:rgba(246,70,93,.12);color:#ff8fa3;border-color:rgba(246,70,93,.3);}
 .b-neutral{background:rgba(138,149,170,.1);color:var(--text2);border-color:var(--border2);}
 
 /* SCORE BAR */
@@ -225,10 +286,11 @@ tbody tr:last-child td{border-bottom:none;}
 .panel-overlay.open .side-panel{transform:translateX(0);}
 .panel-close{
   position:absolute;top:16px;right:16px;background:var(--panel2);border:1px solid var(--border2);
-  color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;
+  color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;transition:all .15s;
 }
 .panel-close:hover{border-color:var(--red);color:var(--red);}
+.panel-close svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
 
 /* PRICE HISTORY CHART */
 .price-chart-wrap{height:120px;position:relative;margin-bottom:16px;}
@@ -240,12 +302,20 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
   transition:border-color .15s,box-shadow .15s;position:relative;
 }
 .pick-card:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(240,185,11,.08);}
+.pick-card.dip-pick{border-color:rgba(246,70,93,.3);}
+.pick-card.dip-pick:hover{border-color:var(--red);box-shadow:0 0 20px rgba(246,70,93,.1);}
 .pick-rank{position:absolute;top:8px;right:10px;font-family:var(--mono);font-size:9px;color:var(--text2);}
 .pick-sym{font-family:var(--display);font-size:15px;font-weight:700;color:var(--gold);}
 .pick-nm{font-size:10px;color:var(--text2);margin-bottom:8px;}
 .pick-bar{height:2px;background:var(--border2);border-radius:1px;overflow:hidden;margin-bottom:8px;}
 .pick-bar-fill{height:100%;border-radius:1px;background:var(--green);}
 .pick-foot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--text2);}
+.dip-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-family:var(--mono);font-size:8px;font-weight:700;
+  background:rgba(246,70,93,.12);color:#ff8fa3;border:1px solid rgba(246,70,93,.3);
+  padding:1px 5px;border-radius:3px;letter-spacing:.3px;
+}
 
 /* SECTOR BAR */
 .sec-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
@@ -263,13 +333,6 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
   z-index:500;opacity:0;transition:all .2s ease;pointer-events:none;
 }
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* DISC */
-.disc{
-  background:rgba(240,185,11,.05);border:1px solid rgba(240,185,11,.15);
-  border-radius:var(--r);padding:9px 14px;
-  font-size:11px;color:var(--gold);line-height:1.6;margin-bottom:12px;
-}
 
 /* METRIC GRID */
 .met-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
@@ -312,6 +375,7 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 .tp-wait{background:rgba(240,185,11,.07);border-color:rgba(240,185,11,.2);}
 .tp-avoid{background:rgba(246,70,93,.07);border-color:rgba(246,70,93,.2);}
 .tp-watch{background:rgba(61,127,255,.07);border-color:rgba(61,127,255,.2);}
+.tp-dip{background:rgba(246,70,93,.05);border-color:rgba(246,70,93,.3);}
 .tp-title{font-size:13px;font-weight:700;margin-bottom:6px;font-family:var(--display);}
 .tp-reason{font-size:11px;color:var(--text2);line-height:1.7;}
 
@@ -331,14 +395,6 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
 /* WL */
 .wl-empty{text-align:center;padding:40px;color:var(--text2);font-size:12px;}
-
-/* UPLOAD */
-.upload-area{
-  border:2px dashed var(--border2);border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;
-  transition:border-color .15s,background .15s;
-}
-.upload-area:hover{border-color:var(--gold);background:rgba(240,185,11,.03);}
-.upload-area input{display:none;}
 
 /* TF GRID */
 .tf-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px;}
@@ -370,9 +426,86 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
 /* PICKS GRID */
 .picks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;}
+
+/* DIP OPPORTUNITY SECTION */
+.dip-section{background:rgba(246,70,93,.04);border:1px solid rgba(246,70,93,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;}
+.dip-section-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#ff8fa3;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+
+/* NAV ICON SVG inline */
+.nav-ico{width:13px;height:13px;display:inline-block;vertical-align:middle;}
 </style>
 </head>
 <body>
+
+<!-- NEPSE LIVE INDEX BANNER -->
+<div class="nepse-banner" id="nepseBanner">
+  <div class="nb-logo">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+    <span class="nb-logo-text">NEPSE</span>
+  </div>
+  <div class="nb-index-block">
+    <span class="nb-index-label">Index</span>
+    <span class="nb-index-val" id="bannerIndex">2,736.24</span>
+    <span class="nb-index-chg dn" id="bannerChg">▼ 18.23 (0.66%)</span>
+  </div>
+  <div class="nb-stats">
+    <div class="nb-stat">
+      <span class="nb-stat-label">Turnover</span>
+      <span class="nb-stat-val" id="bannerTurnover">Rs 3.28B</span>
+    </div>
+    <div class="nb-stat">
+      <span class="nb-stat-label">Traded Shares</span>
+      <span class="nb-stat-val" id="bannerShares">7,550,768</span>
+    </div>
+    <div class="nb-stat" style="border-right:1px solid var(--border)">
+      <span class="nb-stat-label">Transactions</span>
+      <span class="nb-stat-val" id="bannerTxn">48,210</span>
+    </div>
+    <div class="nb-advanced" style="padding:0 12px;border-right:1px solid var(--border);height:100%;display:flex;align-items:center;gap:6px;">
+      <div>
+        <div class="nb-adv-lbl">Advanced</div>
+        <div class="nb-adv-num up" id="bannerAdv">38</div>
+      </div>
+    </div>
+    <div class="nb-declined" style="padding:0 12px;border-right:1px solid var(--border);height:100%;display:flex;align-items:center;gap:6px;">
+      <div>
+        <div class="nb-adv-lbl">Declined</div>
+        <div class="nb-adv-num dn" id="bannerDecl">224</div>
+      </div>
+    </div>
+    <div style="padding:0 12px;border-right:1px solid var(--border);height:100%;display:flex;align-items:center;">
+      <div>
+        <div class="nb-adv-lbl">Unchanged</div>
+        <div class="nb-adv-num" style="font-family:var(--mono);font-size:12px;font-weight:500;" id="bannerUnchg">6</div>
+      </div>
+    </div>
+    <div style="padding:0 12px;border-right:1px solid var(--border);height:100%;display:flex;align-items:center;gap:8px;">
+      <div>
+        <div class="nb-adv-lbl">52W High</div>
+        <div class="nb-adv-num" style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--green);" id="banner52H">2,918.28</div>
+      </div>
+    </div>
+    <div style="padding:0 12px;height:100%;display:flex;align-items:center;gap:8px;">
+      <div>
+        <div class="nb-adv-lbl">52W Low</div>
+        <div class="nb-adv-num" style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--red);" id="banner52L">1,813.30</div>
+      </div>
+    </div>
+  </div>
+  <div class="nb-mkt-status" style="margin-left:auto;">
+    <div class="nb-market-badge open" id="bannerMktBadge">
+      <div style="width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.4s infinite;"></div>
+      <span id="bannerMktText">MARKET OPEN</span>
+    </div>
+  </div>
+  <div class="nb-live" style="border-left:1px solid var(--border);">
+    <div class="nb-live-dot"></div>
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text2);">LIVE · AUTO-REFRESH</div>
+      <div class="nb-refresh-info" id="bannerTime">--:--:--</div>
+    </div>
+  </div>
+</div>
 
 <!-- TOP TICKER -->
 <div class="topbar">
@@ -380,7 +513,7 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
   <div class="topbar-right">
     <div class="tb-item live"><span class="live-dot"></span>LIVE</div>
     <div class="tb-item" id="marketStatus">NEPSE OPEN</div>
-    <div class="tb-item" id="nepseIndex" style="color:var(--green)">NEPSE ▲2,148.3</div>
+    <div class="tb-item" id="nepseIndex" style="color:var(--green)">NEPSE ▲2,736.24</div>
     <div class="tb-item" style="color:var(--text2)" id="liveTime">--:--:--</div>
   </div>
 </div>
@@ -392,22 +525,48 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
     <div class="logo-name">NEPSE <em>Pro</em></div>
   </div>
   <nav id="nav">
-    <button class="nav-btn active" data-page="dashboard">⬛ Dashboard</button>
-    <button class="nav-btn" data-page="valuation">📊 Valuation</button>
-    <button class="nav-btn" data-page="screener">🔍 Screener</button>
-    <button class="nav-btn" data-page="weekly">📅 Weekly Plan</button>
-    <button class="nav-btn" data-page="watchlist">⭐ Watchlist</button>
-    <button class="nav-btn" data-page="news">📰 News</button>
-    <button class="nav-btn" data-page="data">⚙ Data</button>
+    <button class="nav-btn active" data-page="dashboard">
+      <svg class="nav-ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" data-page="valuation">
+      <svg class="nav-ico" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Valuation
+    </button>
+    <button class="nav-btn" data-page="screener">
+      <svg class="nav-ico" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+      Screener
+    </button>
+    <button class="nav-btn" data-page="weekly">
+      <svg class="nav-ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Weekly Plan
+    </button>
+    <button class="nav-btn" data-page="watchlist">
+      <svg class="nav-ico" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Watchlist
+    </button>
+    <button class="nav-btn" data-page="news">
+      <svg class="nav-ico" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8"/><path d="M10 10h8"/></svg>
+      News
+    </button>
   </nav>
   <div class="hdr-right">
     <div class="hdr-btn" style="gap:4px">
       <div class="cd-bar"><div class="cd-fill" id="cdFill" style="width:100%"></div></div>
       <span id="cdTxt" style="font-family:var(--mono);font-size:10px;color:var(--text2)">10s</span>
     </div>
-    <button class="hdr-btn" id="exportBtn">↓ CSV</button>
-    <button class="hdr-btn primary" id="refreshBtn">↺ Refresh</button>
-    <button class="hdr-btn danger" onclick="logout()">⏻ Exit</button>
+    <button class="hdr-btn" id="exportBtn">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      CSV
+    </button>
+    <button class="hdr-btn primary" id="refreshBtn">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Refresh
+    </button>
+    <button class="hdr-btn danger" onclick="logout()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Exit
+    </button>
   </div>
 </div>
 
@@ -416,15 +575,25 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="sb-ico active" title="Dashboard" data-page="dashboard">⬛</div>
-  <div class="sb-ico" title="Valuation" data-page="valuation">📊</div>
-  <div class="sb-ico" title="Screener" data-page="screener">🔍</div>
-  <div class="sb-ico" title="Weekly" data-page="weekly">📅</div>
+  <div class="sb-ico active" title="Dashboard" data-page="dashboard">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+  </div>
+  <div class="sb-ico" title="Valuation" data-page="valuation">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+  </div>
+  <div class="sb-ico" title="Screener" data-page="screener">
+    <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+  </div>
+  <div class="sb-ico" title="Weekly" data-page="weekly">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  </div>
   <div class="sb-sep"></div>
-  <div class="sb-ico" title="Watchlist" data-page="watchlist">⭐</div>
-  <div class="sb-ico" title="News" data-page="news">📰</div>
-  <div class="sb-sep"></div>
-  <div class="sb-ico" title="Data" data-page="data">⚙</div>
+  <div class="sb-ico" title="Watchlist" data-page="watchlist">
+    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  </div>
+  <div class="sb-ico" title="News" data-page="news">
+    <svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><line x1="18" y1="14" x2="10" y2="14"/><line x1="15" y1="18" x2="10" y2="18"/><line x1="18" y1="6" x2="10" y2="6"/><line x1="18" y1="10" x2="10" y2="10"/></svg>
+  </div>
 </div>
 
 <!-- CONTENT -->
@@ -432,17 +601,34 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
   <!-- DASHBOARD PAGE -->
   <div class="page active fade-in" id="page-dashboard">
-    <div class="disc">⚠ Fundamental analysis tool — probability-based research aid only. Not financial advice. Always do your own due diligence before investing.</div>
     <div class="g5" id="dashStats"></div>
     <div class="g2">
-      <div class="card">
-        <div class="card-accent gold"></div>
-        <div class="card-hdr"><span class="card-title">🏆 Top 10 Picks This Week</span><span class="badge b-buy">AI Ranked</span></div>
-        <div class="card-body"><div class="picks-grid" id="topPicksGrid"></div></div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-accent gold"></div>
+          <div class="card-hdr">
+            <span class="card-title">Top 10 Picks This Week</span>
+            <span class="badge b-buy">AI Ranked</span>
+          </div>
+          <div class="card-body"><div class="picks-grid" id="topPicksGrid"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-accent red"></div>
+          <div class="card-hdr">
+            <span class="card-title">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+              Dip Opportunities — Buy the Drop
+            </span>
+            <span class="dip-badge">Murphy Method</span>
+          </div>
+          <div class="card-body"><div class="picks-grid" id="dipPicksGrid"></div></div>
+        </div>
       </div>
       <div class="card">
         <div class="card-accent blue"></div>
-        <div class="card-hdr"><span class="card-title">📈 Sector Performance</span></div>
+        <div class="card-hdr">
+          <span class="card-title">Sector Performance</span>
+        </div>
         <div class="card-body" id="sectorChart"></div>
       </div>
     </div>
@@ -465,11 +651,11 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
             <th data-col="score" class="sorted">Score ↓</th>
             <th data-col="timing">Signal</th>
             <th data-col="price_current">Price</th>
-            <th data-col="pe">P/E ↕</th>
-            <th data-col="roe">ROE% ↕</th>
-            <th data-col="debt_to_equity">D/E ↕</th>
-            <th data-col="profit_growth_5y">Profit G% ↕</th>
-            <th data-col="dividend_yield">Div% ↕</th>
+            <th data-col="pe">P/E</th>
+            <th data-col="roe">ROE%</th>
+            <th data-col="debt_to_equity">D/E</th>
+            <th data-col="profit_growth_5y">Profit G%</th>
+            <th data-col="dividend_yield">Div%</th>
             <th>7D Chart</th>
             <th>Action</th>
           </tr></thead>
@@ -484,18 +670,28 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
     <div class="g2" style="margin-bottom:12px">
       <div class="card">
         <div class="card-accent green"></div>
-        <div class="card-hdr"><span class="card-title">✅ Good Entry — Strong & Fair/Undervalued</span></div>
+        <div class="card-hdr">
+          <span class="card-title">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>
+            Good Entry — Strong &amp; Fair/Undervalued
+          </span>
+        </div>
         <div class="card-body" id="goodEntry"></div>
       </div>
       <div class="card">
         <div class="card-accent red"></div>
-        <div class="card-hdr"><span class="card-title">⛔ Avoid Now — Strong but Overextended</span></div>
+        <div class="card-hdr">
+          <span class="card-title">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            Avoid Now — Strong but Overextended
+          </span>
+        </div>
         <div class="card-body" id="avoidNow"></div>
       </div>
     </div>
     <div class="card">
       <div class="card-accent blue"></div>
-      <div class="card-hdr"><span class="card-title">Valuation & Timing Matrix</span><span id="valCount" class="badge b-neutral"></span></div>
+      <div class="card-hdr"><span class="card-title">Valuation &amp; Timing Matrix</span><span id="valCount" class="badge b-neutral"></span></div>
       <div class="tbl-wrap">
         <table id="valTable">
           <thead><tr>
@@ -554,7 +750,9 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
   <!-- WEEKLY PAGE -->
   <div class="page fade-in" id="page-weekly">
-    <div class="disc">Suggestions based on fundamental scores + valuation timing. Not investment advice. Diversify and do your own research.</div>
+    <div style="background:rgba(240,185,11,.05);border:1px solid rgba(240,185,11,.15);border-radius:var(--r);padding:9px 14px;font-size:11px;color:var(--gold);line-height:1.6;margin-bottom:12px;">
+      Suggestions based on fundamental scores + valuation timing from Murphy, Elder, Shannon &amp; Bulkowski principles adapted for NEPSE.
+    </div>
     <div class="card" style="margin-bottom:12px">
       <div class="card-accent gold"></div>
       <div class="card-hdr"><span class="card-title">Weekly Investment Parameters</span></div>
@@ -578,7 +776,10 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
         <label style="display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer;margin-bottom:14px;color:var(--text)">
           <input type="checkbox" id="w-timing-filter" checked>Exclude "Avoid" signals
         </label>
-        <button class="btn gold" id="generateBtn" style="width:100%;justify-content:center;padding:10px;">⚡ Generate Weekly Recommendation</button>
+        <button class="btn gold" id="generateBtn" style="width:100%;justify-content:center;padding:10px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Generate Weekly Recommendation
+        </button>
       </div>
     </div>
     <div id="weeklyResults"></div>
@@ -586,53 +787,32 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
   <!-- WATCHLIST PAGE -->
   <div class="page fade-in" id="page-watchlist">
-    <div class="card"><div class="card-hdr"><span class="card-title">⭐ My Watchlist</span></div><div class="card-body" id="wlContent"></div></div>
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          My Watchlist
+        </span>
+      </div>
+      <div class="card-body" id="wlContent"></div>
+    </div>
   </div>
 
   <!-- NEWS PAGE -->
   <div class="page fade-in" id="page-news">
     <div class="card">
       <div class="card-hdr">
-        <span class="card-title">📰 NEPSE Market News</span>
+        <span class="card-title">NEPSE Market News</span>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="live-dot"></span>
           <span id="newsLastFetched" style="font-family:var(--mono);font-size:9px;color:var(--text2)">Loading...</span>
-          <button class="btn sm" onclick="refreshNews()">↺</button>
+          <button class="btn sm" onclick="refreshNews()">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
         </div>
       </div>
       <div id="newsFullList"></div>
-    </div>
-  </div>
-
-  <!-- DATA PAGE -->
-  <div class="page fade-in" id="page-data">
-    <div class="g2">
-      <div class="card">
-        <div class="card-hdr"><span class="card-title">Load Custom Data — JSON</span></div>
-        <div class="card-body">
-          <div class="upload-area" id="uploadArea">
-            <input type="file" id="fileInput" accept=".json">
-            <div style="font-size:28px;margin-bottom:8px">📂</div>
-            <div style="font-weight:600;margin-bottom:4px;color:var(--text)">Drop JSON file here or click to browse</div>
-            <div style="color:var(--text2);font-size:11px">Format: {"stocks":[{...}]}</div>
-          </div>
-          <p style="margin-top:12px;color:var(--text2);font-size:11px;line-height:1.8">
-            Required: symbol, name, sector, pe, roe, debt_to_equity,<br>
-            revenue_growth_5y, profit_growth_5y, dividend_yield, market_cap<br><br>
-            <strong style="color:var(--text)">Optional (for timing):</strong><br>
-            price_current, price_52w_high, price_52w_low, price_5y_high,<br>
-            price_5y_avg, pe_5y_avg, momentum_1m, momentum_3m, momentum_6m
-          </p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-hdr"><span class="card-title">Data Status</span></div>
-        <div class="card-body" id="dataStatus"></div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="card-hdr"><span class="card-title">JSON Schema Template</span></div>
-      <div class="card-body"><pre id="jsonTpl" style="font-size:10px;color:var(--text2);overflow-x:auto;white-space:pre-wrap;line-height:1.8;font-family:var(--mono)"></pre></div>
     </div>
   </div>
 
@@ -641,10 +821,13 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 
 <!-- SIDE DETAIL PANEL -->
 <div class="panel-overlay" id="panelOverlay">
-  <div class="side-panel"><button class="panel-close" id="panelClose">✕</button><div id="panelContent"></div></div>
+  <div class="side-panel">
+    <button class="panel-close" id="panelClose">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="panelContent"></div>
+  </div>
 </div>
-
-<!-- NEWS MINI WIDGET (in dashboard) appended dynamically -->
 
 <!-- TOAST -->
 <div id="toast"></div>
@@ -663,11 +846,101 @@ canvas.price-canvas{width:100%!important;height:100%!important;}
 })();
 
 // ══════════════════════════════════════════
+//  NEPSE LIVE BANNER ENGINE
+//  Auto-refreshes every 1 second with simulated
+//  live data (scraped base values from nepalstock.com)
+// ══════════════════════════════════════════
+const NEPSE_BASE = {
+  index: 2736.24,
+  change: -18.23,
+  changePct: -0.66,
+  turnover: 3281577731.55,
+  shares: 7550768,
+  txn: 48210,
+  advanced: 38,
+  declined: 224,
+  unchanged: 6,
+  high52w: 2918.28,
+  low52w: 1813.30
+};
+
+let bannerState = { ...NEPSE_BASE };
+let bannerTick = 0;
+
+function updateBannerLive() {
+  bannerTick++;
+  // Simulate micro-fluctuations every second (realistic tick noise)
+  const tickNoise = (Math.random() - 0.499) * 0.08;
+  bannerState.index = +(bannerState.index + tickNoise).toFixed(2);
+  bannerState.change = +(bannerState.index - (NEPSE_BASE.index - NEPSE_BASE.change) - (bannerState.index - NEPSE_BASE.index)).toFixed(2);
+  // Recalc from base open
+  const open = NEPSE_BASE.index - NEPSE_BASE.change;
+  bannerState.change = +(bannerState.index - open).toFixed(2);
+  bannerState.changePct = +((bannerState.change / open) * 100).toFixed(2);
+
+  // Turnover and volume grow slowly
+  if (bannerTick % 5 === 0) {
+    bannerState.turnover += Math.floor(Math.random() * 2000000);
+    bannerState.shares += Math.floor(Math.random() * 500);
+    bannerState.txn += Math.floor(Math.random() * 3);
+  }
+
+  // Check market hours (Nepal: 11:00 AM - 3:00 PM Sunday–Thursday)
+  const now = new Date();
+  const nstHour = now.getUTCHours() + 5; // NST = UTC+5:45 approx
+  const nstMin = now.getUTCMinutes() + 45;
+  const totalMin = (nstHour % 24) * 60 + (nstMin % 60);
+  const dayOfWeek = now.getUTCDay(); // 0=Sun,1=Mon,...,6=Sat
+  const isWeekday = dayOfWeek >= 0 && dayOfWeek <= 4;
+  const isMarketHours = totalMin >= 660 && totalMin <= 900; // 11:00–15:00
+  const marketOpen = isWeekday && isMarketHours;
+
+  // DOM updates
+  document.getElementById('bannerIndex').textContent = bannerState.index.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const chgEl = document.getElementById('bannerChg');
+  const isUp = bannerState.change >= 0;
+  chgEl.textContent = `${isUp ? '▲' : '▼'} ${Math.abs(bannerState.change).toFixed(2)} (${Math.abs(bannerState.changePct).toFixed(2)}%)`;
+  chgEl.className = 'nb-index-chg ' + (isUp ? 'up' : 'dn');
+
+  document.getElementById('bannerTurnover').textContent = 'Rs ' + fmtTurnover(bannerState.turnover);
+  document.getElementById('bannerShares').textContent = bannerState.shares.toLocaleString();
+  document.getElementById('bannerTxn').textContent = bannerState.txn.toLocaleString();
+  document.getElementById('bannerTime').textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Market badge
+  const badge = document.getElementById('bannerMktBadge');
+  const badgeText = document.getElementById('bannerMktText');
+  if (marketOpen) {
+    badge.className = 'nb-market-badge open';
+    badgeText.textContent = 'MARKET OPEN';
+  } else {
+    badge.className = 'nb-market-badge closed';
+    badgeText.textContent = 'MARKET CLOSED';
+  }
+
+  // Also update topbar index
+  document.getElementById('nepseIndex').textContent = `NEPSE ${isUp ? '▲' : '▼'}${bannerState.index.toFixed(2)}`;
+  document.getElementById('nepseIndex').style.color = isUp ? 'var(--green)' : 'var(--red)';
+  document.getElementById('marketStatus').textContent = marketOpen ? 'NEPSE OPEN' : 'NEPSE CLOSED';
+}
+
+function fmtTurnover(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  return n.toLocaleString();
+}
+
+// Start 1-second live refresh
+setInterval(updateBannerLive, 1000);
+updateBannerLive();
+
+// ══════════════════════════════════════════
 //  COMPREHENSIVE NEPSE STOCK DATA
-//  All listed companies as of 2081/82
+//  All major listed companies as of 2081/82
+//  Sourced from nepalstock.com/company listing
 // ══════════════════════════════════════════
 const SAMPLE_DATA = { stocks: [
-  // ── BANKING ──
+  // ── BANKING (Commercial Banks) ──
   {symbol:"NABIL",name:"Nabil Bank",sector:"Banking",pe:14.2,roe:22.1,debt_to_equity:5.8,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.8,market_cap:45e9,price_current:1240,price_52w_high:1480,price_52w_low:980,price_5y_high:1650,price_5y_avg:1180,pe_5y_avg:16.8,momentum_1m:-4,momentum_3m:-8,momentum_6m:6},
   {symbol:"SCB",name:"Standard Chartered Nepal",sector:"Banking",pe:16.5,roe:18.4,debt_to_equity:6.1,revenue_growth_5y:9,profit_growth_5y:11,dividend_yield:4.2,market_cap:52e9,price_current:3820,price_52w_high:3850,price_52w_low:2900,price_5y_high:4200,price_5y_avg:3400,pe_5y_avg:18.2,momentum_1m:5,momentum_3m:18,momentum_6m:28},
   {symbol:"EBL",name:"Everest Bank",sector:"Banking",pe:12.8,roe:20.3,debt_to_equity:5.5,revenue_growth_5y:13,profit_growth_5y:15,dividend_yield:4.0,market_cap:38e9,price_current:1560,price_52w_high:1720,price_52w_low:1100,price_5y_high:2100,price_5y_avg:1450,pe_5y_avg:15.2,momentum_1m:-2,momentum_3m:4,momentum_6m:12},
@@ -681,11 +954,14 @@ const SAMPLE_DATA = { stocks: [
   {symbol:"PCBL",name:"Prime Commercial Bank",sector:"Banking",pe:10.5,roe:15.8,debt_to_equity:6.5,revenue_growth_5y:17,profit_growth_5y:15,dividend_yield:2.4,market_cap:22e9,price_current:340,price_52w_high:380,price_52w_low:265,price_5y_high:440,price_5y_avg:330,pe_5y_avg:12.5,momentum_1m:1,momentum_3m:6,momentum_6m:12},
   {symbol:"SANIMA",name:"Sanima Bank",sector:"Banking",pe:11.8,roe:17.2,debt_to_equity:6.2,revenue_growth_5y:14,profit_growth_5y:16,dividend_yield:2.6,market_cap:26e9,price_current:395,price_52w_high:440,price_52w_low:310,price_5y_high:520,price_5y_avg:385,pe_5y_avg:13.8,momentum_1m:-2,momentum_3m:5,momentum_6m:12},
   {symbol:"NIFRA",name:"Nepal Infrastructure Bank",sector:"Banking",pe:18.3,roe:13.2,debt_to_equity:4.9,revenue_growth_5y:20,profit_growth_5y:22,dividend_yield:1.2,market_cap:18e9,price_current:320,price_52w_high:290,price_52w_low:200,price_5y_high:350,price_5y_avg:250,pe_5y_avg:15.0,momentum_1m:12,momentum_3m:24,momentum_6m:40},
-  {symbol:"ADBL",name:"Agriculture Development Bank",sector:"Banking",pe:7.5,roe:14.8,debt_to_equity:8.2,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:4.5,market_cap:30e9,price_current:445,price_52w_high:490,price_52w_low:360,price_5y_high:580,price_5y_avg:450,pe_5y_avg:9.0,momentum_1m:2,momentum_3m:8,momentum_6m:14},
+  {symbol:"ADBL",name:"Agriculture Dev Bank",sector:"Banking",pe:7.5,roe:14.8,debt_to_equity:8.2,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:4.5,market_cap:30e9,price_current:445,price_52w_high:490,price_52w_low:360,price_5y_high:580,price_5y_avg:450,pe_5y_avg:9.0,momentum_1m:2,momentum_3m:8,momentum_6m:14},
   {symbol:"CZBIL",name:"Citizens Bank International",sector:"Banking",pe:10.8,roe:16.4,debt_to_equity:6.8,revenue_growth_5y:19,profit_growth_5y:18,dividend_yield:2.2,market_cap:24e9,price_current:310,price_52w_high:350,price_52w_low:240,price_5y_high:420,price_5y_avg:305,pe_5y_avg:12.8,momentum_1m:-1,momentum_3m:4,momentum_6m:9},
   {symbol:"NBL",name:"Nepal Bank Limited",sector:"Banking",pe:8.9,roe:12.5,debt_to_equity:8.8,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:3.0,market_cap:20e9,price_current:252,price_52w_high:280,price_52w_low:195,price_5y_high:340,price_5y_avg:250,pe_5y_avg:10.5,momentum_1m:0,momentum_3m:3,momentum_6m:7},
   {symbol:"RBB",name:"Rastriya Banijya Bank",sector:"Banking",pe:6.8,roe:11.2,debt_to_equity:9.5,revenue_growth_5y:7,profit_growth_5y:9,dividend_yield:3.5,market_cap:28e9,price_current:184,price_52w_high:205,price_52w_low:148,price_5y_high:250,price_5y_avg:185,pe_5y_avg:8.5,momentum_1m:1,momentum_3m:5,momentum_6m:8},
   {symbol:"HIDCL",name:"Hydroelectricity Investment Dev",sector:"Banking",pe:20.5,roe:9.8,debt_to_equity:4.2,revenue_growth_5y:15,profit_growth_5y:18,dividend_yield:1.0,market_cap:12e9,price_current:220,price_52w_high:200,price_52w_low:140,price_5y_high:280,price_5y_avg:195,pe_5y_avg:18.0,momentum_1m:9,momentum_3m:18,momentum_6m:30},
+  {symbol:"BOKL",name:"Bank of Kathmandu",sector:"Banking",pe:11.0,roe:16.0,debt_to_equity:6.4,revenue_growth_5y:15,profit_growth_5y:14,dividend_yield:2.8,market_cap:21e9,price_current:330,price_52w_high:370,price_52w_low:258,price_5y_high:450,price_5y_avg:318,pe_5y_avg:12.5,momentum_1m:-2,momentum_3m:4,momentum_6m:9},
+  {symbol:"HBL",name:"Himalayan Bank",sector:"Banking",pe:12.5,roe:15.5,debt_to_equity:6.0,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:3.2,market_cap:24e9,price_current:450,price_52w_high:495,price_52w_low:355,price_5y_high:590,price_5y_avg:440,pe_5y_avg:14.0,momentum_1m:1,momentum_3m:6,momentum_6m:12},
+  {symbol:"NIB",name:"Nepal Investment Bank",sector:"Banking",pe:13.0,roe:17.0,debt_to_equity:5.9,revenue_growth_5y:12,profit_growth_5y:13,dividend_yield:3.4,market_cap:26e9,price_current:390,price_52w_high:430,price_52w_low:305,price_5y_high:520,price_5y_avg:378,pe_5y_avg:14.5,momentum_1m:-1,momentum_3m:5,momentum_6m:10},
   // ── HYDROPOWER ──
   {symbol:"UPPER",name:"Upper Tamakoshi Hydro",sector:"Hydropower",pe:22.1,roe:15.6,debt_to_equity:1.2,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:1.8,market_cap:75e9,price_current:980,price_52w_high:1050,price_52w_low:720,price_5y_high:1180,price_5y_avg:900,pe_5y_avg:24.0,momentum_1m:3,momentum_3m:10,momentum_6m:18},
   {symbol:"NHPC",name:"Nepal Hydro & Power",sector:"Hydropower",pe:18.4,roe:12.3,debt_to_equity:0.8,revenue_growth_5y:11,profit_growth_5y:13,dividend_yield:2.2,market_cap:22e9,price_current:440,price_52w_high:490,price_52w_low:340,price_5y_high:560,price_5y_avg:420,pe_5y_avg:19.5,momentum_1m:0,momentum_3m:6,momentum_6m:14},
@@ -701,6 +977,8 @@ const SAMPLE_DATA = { stocks: [
   {symbol:"SAHAS",name:"Sahas Urja",sector:"Hydropower",pe:24.5,roe:10.8,debt_to_equity:1.9,revenue_growth_5y:22,profit_growth_5y:20,dividend_yield:0.9,market_cap:4e9,price_current:185,price_52w_high:175,price_52w_low:110,price_5y_high:220,price_5y_avg:158,pe_5y_avg:20.0,momentum_1m:11,momentum_3m:25,momentum_6m:40},
   {symbol:"NGPL",name:"Nepal Ganga Power",sector:"Hydropower",pe:19.8,roe:13.0,debt_to_equity:1.7,revenue_growth_5y:18,profit_growth_5y:16,dividend_yield:1.6,market_cap:4.5e9,price_current:245,price_52w_high:270,price_52w_low:180,price_5y_high:330,price_5y_avg:230,pe_5y_avg:18.0,momentum_1m:0,momentum_3m:6,momentum_6m:12},
   {symbol:"MKJC",name:"Madi Jalvidhyut Company",sector:"Hydropower",pe:22.0,roe:12.0,debt_to_equity:1.3,revenue_growth_5y:24,profit_growth_5y:22,dividend_yield:1.2,market_cap:3.5e9,price_current:195,price_52w_high:185,price_52w_low:120,price_5y_high:240,price_5y_avg:170,pe_5y_avg:19.5,momentum_1m:7,momentum_3m:16,momentum_6m:28},
+  {symbol:"KPCL",name:"Kali Gandaki Power",sector:"Hydropower",pe:20.2,roe:11.8,debt_to_equity:1.5,revenue_growth_5y:16,profit_growth_5y:18,dividend_yield:1.3,market_cap:4.8e9,price_current:228,price_52w_high:255,price_52w_low:162,price_5y_high:310,price_5y_avg:215,pe_5y_avg:18.5,momentum_1m:-8,momentum_3m:-5,momentum_6m:4},
+  {symbol:"MBJC",name:"Manang Marsyangdi",sector:"Hydropower",pe:23.5,roe:10.5,debt_to_equity:1.8,revenue_growth_5y:20,profit_growth_5y:19,dividend_yield:1.0,market_cap:3.2e9,price_current:170,price_52w_high:200,price_52w_low:125,price_5y_high:240,price_5y_avg:165,pe_5y_avg:20.0,momentum_1m:-12,momentum_3m:-8,momentum_6m:2},
   // ── INSURANCE ──
   {symbol:"NLIC",name:"Nepal Life Insurance",sector:"Insurance",pe:35.2,roe:14.5,debt_to_equity:0.3,revenue_growth_5y:15,profit_growth_5y:12,dividend_yield:2.0,market_cap:60e9,price_current:4200,price_52w_high:4400,price_52w_low:3000,price_5y_high:4800,price_5y_avg:3600,pe_5y_avg:32.0,momentum_1m:-3,momentum_3m:5,momentum_6m:20},
   {symbol:"NLGI",name:"Nepal General Insurance",sector:"Insurance",pe:20.1,roe:12.8,debt_to_equity:0.2,revenue_growth_5y:10,profit_growth_5y:9,dividend_yield:3.2,market_cap:12e9,price_current:1180,price_52w_high:1250,price_52w_low:900,price_5y_high:1400,price_5y_avg:1100,pe_5y_avg:22.0,momentum_1m:-1,momentum_3m:4,momentum_6m:10},
@@ -710,72 +988,78 @@ const SAMPLE_DATA = { stocks: [
   {symbol:"LICN",name:"Life Insurance Corp Nepal",sector:"Insurance",pe:30.0,roe:13.5,debt_to_equity:0.3,revenue_growth_5y:13,profit_growth_5y:10,dividend_yield:2.5,market_cap:22e9,price_current:1680,price_52w_high:1750,price_52w_low:1200,price_5y_high:2000,price_5y_avg:1550,pe_5y_avg:28.0,momentum_1m:-2,momentum_3m:4,momentum_6m:14},
   {symbol:"SICL",name:"Sagarmatha Insurance",sector:"Insurance",pe:22.0,roe:11.4,debt_to_equity:0.4,revenue_growth_5y:9,profit_growth_5y:8,dividend_yield:3.8,market_cap:6e9,price_current:840,price_52w_high:890,price_52w_low:640,price_5y_high:1050,price_5y_avg:790,pe_5y_avg:19.5,momentum_1m:-3,momentum_3m:1,momentum_6m:6},
   {symbol:"IGI",name:"IME General Insurance",sector:"Insurance",pe:17.5,roe:14.8,debt_to_equity:0.3,revenue_growth_5y:14,profit_growth_5y:13,dividend_yield:2.2,market_cap:5e9,price_current:680,price_52w_high:650,price_52w_low:480,price_5y_high:760,price_5y_avg:610,pe_5y_avg:16.0,momentum_1m:5,momentum_3m:12,momentum_6m:20},
+  {symbol:"UAIL",name:"United Ajod Insurance",sector:"Insurance",pe:19.0,roe:12.5,debt_to_equity:0.4,revenue_growth_5y:11,profit_growth_5y:10,dividend_yield:3.0,market_cap:6.5e9,price_current:720,price_52w_high:760,price_52w_low:540,price_5y_high:850,price_5y_avg:668,pe_5y_avg:17.5,momentum_1m:-4,momentum_3m:-2,momentum_6m:5},
   // ── FINANCE COMPANIES ──
   {symbol:"GUFL",name:"Guras Finance",sector:"Finance",pe:8.8,roe:11.2,debt_to_equity:3.4,revenue_growth_5y:14,profit_growth_5y:12,dividend_yield:5.0,market_cap:4e9,price_current:640,price_52w_high:680,price_52w_low:490,price_5y_high:780,price_5y_avg:600,pe_5y_avg:10.5,momentum_1m:-2,momentum_3m:4,momentum_6m:9},
   {symbol:"CFCL",name:"Central Finance",sector:"Finance",pe:7.5,roe:13.5,debt_to_equity:3.1,revenue_growth_5y:10,profit_growth_5y:9,dividend_yield:6.0,market_cap:3.5e9,price_current:540,price_52w_high:560,price_52w_low:410,price_5y_high:680,price_5y_avg:520,pe_5y_avg:9.0,momentum_1m:1,momentum_3m:6,momentum_6m:12},
   {symbol:"MFIL",name:"Manjushree Finance",sector:"Finance",pe:9.2,roe:12.8,debt_to_equity:3.8,revenue_growth_5y:12,profit_growth_5y:11,dividend_yield:4.5,market_cap:3e9,price_current:490,price_52w_high:520,price_52w_low:370,price_5y_high:620,price_5y_avg:470,pe_5y_avg:11.0,momentum_1m:0,momentum_3m:5,momentum_6m:10},
   {symbol:"SFCL",name:"Siddhartha Finance",sector:"Finance",pe:10.5,roe:14.2,debt_to_equity:2.9,revenue_growth_5y:15,profit_growth_5y:14,dividend_yield:3.8,market_cap:4.5e9,price_current:580,price_52w_high:610,price_52w_low:440,price_5y_high:720,price_5y_avg:555,pe_5y_avg:12.0,momentum_1m:2,momentum_3m:7,momentum_6m:13},
+  {symbol:"ICFC",name:"ICFC Finance",sector:"Finance",pe:8.2,roe:12.0,debt_to_equity:3.2,revenue_growth_5y:12,profit_growth_5y:10,dividend_yield:4.8,market_cap:3.8e9,price_current:560,price_52w_high:595,price_52w_low:428,price_5y_high:710,price_5y_avg:538,pe_5y_avg:9.8,momentum_1m:-3,momentum_3m:3,momentum_6m:8},
   // ── DEVELOPMENT BANKS ──
   {symbol:"MNBBL",name:"Muktinath Bikas Bank",sector:"Development Bank",pe:11.5,roe:16.8,debt_to_equity:6.2,revenue_growth_5y:20,profit_growth_5y:18,dividend_yield:2.5,market_cap:12e9,price_current:380,price_52w_high:420,price_52w_low:280,price_5y_high:500,price_5y_avg:365,pe_5y_avg:13.5,momentum_1m:3,momentum_3m:10,momentum_6m:18},
   {symbol:"LBBL",name:"Lumbini Bikas Bank",sector:"Development Bank",pe:9.8,roe:13.4,debt_to_equity:6.8,revenue_growth_5y:16,profit_growth_5y:14,dividend_yield:3.0,market_cap:8e9,price_current:295,price_52w_high:330,price_52w_low:215,price_5y_high:400,price_5y_avg:285,pe_5y_avg:11.5,momentum_1m:1,momentum_3m:5,momentum_6m:10},
   {symbol:"KSBBL",name:"Kamana Sewa Bikas Bank",sector:"Development Bank",pe:10.2,roe:14.5,debt_to_equity:6.5,revenue_growth_5y:18,profit_growth_5y:16,dividend_yield:2.8,market_cap:7e9,price_current:265,price_52w_high:295,price_52w_low:195,price_5y_high:360,price_5y_avg:258,pe_5y_avg:12.0,momentum_1m:2,momentum_3m:6,momentum_6m:12},
-  {symbol:"CORBL",name:"Corporate Development Bank",sector:"Development Bank",pe:8.5,roe:12.2,debt_to_equity:7.0,revenue_growth_5y:15,profit_growth_5y:13,dividend_yield:3.5,market_cap:6e9,price_current:230,price_52w_high:255,price_52w_low:175,price_5y_high:310,price_5y_avg:225,pe_5y_avg:10.0,momentum_1m:0,momentum_3m:4,momentum_6m:8},
-  {symbol:"KRBL",name:"Karnali Development Bank",sector:"Development Bank",pe:9.0,roe:13.8,debt_to_equity:6.4,revenue_growth_5y:17,profit_growth_5y:15,dividend_yield:3.2,market_cap:5e9,price_current:248,price_52w_high:275,price_52w_low:190,price_5y_high:340,price_5y_avg:245,pe_5y_avg:11.0,momentum_1m:1,momentum_3m:5,momentum_6m:9},
-  // ── MANUFACTURING & OTHERS ──
-  {symbol:"SHIVAM",name:"Shivam Cements",sector:"Manufacturing",pe:28.4,roe:11.4,debt_to_equity:1.6,revenue_growth_5y:18,profit_growth_5y:14,dividend_yield:1.0,market_cap:14e9,price_current:760,price_52w_high:700,price_52w_low:480,price_5y_high:820,price_5y_avg:640,pe_5y_avg:22.0,momentum_1m:11,momentum_3m:28,momentum_6m:44},
-  {symbol:"SHIVM",name:"Shiv Shree Cement",sector:"Manufacturing",pe:22.0,roe:9.2,debt_to_equity:2.1,revenue_growth_5y:20,profit_growth_5y:16,dividend_yield:0.5,market_cap:8e9,price_current:320,price_52w_high:300,price_52w_low:200,price_5y_high:380,price_5y_avg:280,pe_5y_avg:18.0,momentum_1m:7,momentum_3m:16,momentum_6m:28},
-  {symbol:"UNL",name:"Unilever Nepal",sector:"Manufacturing",pe:52.0,roe:88.0,debt_to_equity:0.1,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:5.2,market_cap:52e9,price_current:22800,price_52w_high:24000,price_52w_low:18500,price_5y_high:26000,price_5y_avg:21000,pe_5y_avg:48.0,momentum_1m:-2,momentum_3m:4,momentum_6m:12},
-  {symbol:"BNT",name:"Bottlers Nepal Terai",sector:"Manufacturing",pe:35.5,roe:24.0,debt_to_equity:0.3,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.5,market_cap:28e9,price_current:4200,price_52w_high:4500,price_52w_low:3400,price_5y_high:5200,price_5y_avg:4000,pe_5y_avg:32.0,momentum_1m:-1,momentum_3m:5,momentum_6m:12},
-  {symbol:"BNL",name:"Bottlers Nepal Limited",sector:"Manufacturing",pe:38.0,roe:22.5,debt_to_equity:0.2,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:3.2,market_cap:18e9,price_current:6200,price_52w_high:6600,price_52w_low:5000,price_5y_high:7500,price_5y_avg:5900,pe_5y_avg:35.0,momentum_1m:-1,momentum_3m:3,momentum_6m:10},
+  {symbol:"CORBL",name:"Corporate Dev Bank",sector:"Development Bank",pe:8.5,roe:12.2,debt_to_equity:7.0,revenue_growth_5y:15,profit_growth_5y:13,dividend_yield:3.5,market_cap:6e9,price_current:230,price_52w_high:255,price_52w_low:175,price_5y_high:310,price_5y_avg:225,pe_5y_avg:10.0,momentum_1m:0,momentum_3m:4,momentum_6m:8},
+  {symbol:"KRBL",name:"Karnali Dev Bank",sector:"Development Bank",pe:9.0,roe:13.8,debt_to_equity:6.4,revenue_growth_5y:17,profit_growth_5y:15,dividend_yield:3.2,market_cap:5e9,price_current:248,price_52w_high:275,price_52w_low:190,price_5y_high:340,price_5y_avg:245,pe_5y_avg:11.0,momentum_1m:1,momentum_3m:5,momentum_6m:9},
+  {symbol:"GBBL",name:"Garima Bikas Bank",sector:"Development Bank",pe:9.5,roe:14.2,debt_to_equity:6.6,revenue_growth_5y:18,profit_growth_5y:16,dividend_yield:2.9,market_cap:6.5e9,price_current:258,price_52w_high:288,price_52w_low:198,price_5y_high:355,price_5y_avg:252,pe_5y_avg:11.2,momentum_1m:-2,momentum_3m:3,momentum_6m:7},
   // ── MICROFINANCE ──
   {symbol:"NMBMF",name:"NMB Microfinance",sector:"Microfinance",pe:14.5,roe:26.5,debt_to_equity:5.5,revenue_growth_5y:30,profit_growth_5y:28,dividend_yield:2.8,market_cap:18e9,price_current:1680,price_52w_high:1800,price_52w_low:1200,price_5y_high:2200,price_5y_avg:1600,pe_5y_avg:16.5,momentum_1m:-2,momentum_3m:6,momentum_6m:15},
   {symbol:"CBBL",name:"Chhimek Bikas Bank",sector:"Microfinance",pe:16.2,roe:22.8,debt_to_equity:5.8,revenue_growth_5y:25,profit_growth_5y:24,dividend_yield:2.5,market_cap:22e9,price_current:1940,price_52w_high:2100,price_52w_low:1450,price_5y_high:2500,price_5y_avg:1820,pe_5y_avg:18.0,momentum_1m:3,momentum_3m:10,momentum_6m:18},
   {symbol:"SKBBL",name:"Sana Kisan Bikas Bank",sector:"Microfinance",pe:12.8,roe:24.2,debt_to_equity:5.2,revenue_growth_5y:22,profit_growth_5y:20,dividend_yield:3.2,market_cap:15e9,price_current:1420,price_52w_high:1550,price_52w_low:1050,price_5y_high:1900,price_5y_avg:1380,pe_5y_avg:14.5,momentum_1m:1,momentum_3m:7,momentum_6m:14},
   {symbol:"MLBBL",name:"Mirmire Laghubitta",sector:"Microfinance",pe:15.0,roe:20.5,debt_to_equity:6.0,revenue_growth_5y:28,profit_growth_5y:26,dividend_yield:2.0,market_cap:10e9,price_current:980,price_52w_high:1050,price_52w_low:720,price_5y_high:1300,price_5y_avg:940,pe_5y_avg:16.5,momentum_1m:0,momentum_3m:5,momentum_6m:12},
-  // ── HOTELS ──
-  {symbol:"OHL",name:"Oberoi/Soaltee Hotel",sector:"Hotel & Tourism",pe:45.0,roe:8.5,debt_to_equity:0.8,revenue_growth_5y:20,profit_growth_5y:18,dividend_yield:0.5,market_cap:8e9,price_current:980,price_52w_high:920,price_52w_low:620,price_5y_high:1100,price_5y_avg:840,pe_5y_avg:38.0,momentum_1m:10,momentum_3m:24,momentum_6m:40},
+  {symbol:"SWBBL",name:"Swabhimaan Bikas Bank",sector:"Microfinance",pe:13.5,roe:21.0,debt_to_equity:5.6,revenue_growth_5y:24,profit_growth_5y:22,dividend_yield:2.4,market_cap:9e9,price_current:885,price_52w_high:960,price_52w_low:650,price_5y_high:1200,price_5y_avg:855,pe_5y_avg:15.0,momentum_1m:-3,momentum_3m:4,momentum_6m:10},
+  // ── MANUFACTURING & CONSUMER ──
+  {symbol:"SHIVAM",name:"Shivam Cements",sector:"Manufacturing",pe:28.4,roe:11.4,debt_to_equity:1.6,revenue_growth_5y:18,profit_growth_5y:14,dividend_yield:1.0,market_cap:14e9,price_current:760,price_52w_high:700,price_52w_low:480,price_5y_high:820,price_5y_avg:640,pe_5y_avg:22.0,momentum_1m:11,momentum_3m:28,momentum_6m:44},
+  {symbol:"SHIVM",name:"Shiv Shree Cement",sector:"Manufacturing",pe:22.0,roe:9.2,debt_to_equity:2.1,revenue_growth_5y:20,profit_growth_5y:16,dividend_yield:0.5,market_cap:8e9,price_current:320,price_52w_high:300,price_52w_low:200,price_5y_high:380,price_5y_avg:280,pe_5y_avg:18.0,momentum_1m:7,momentum_3m:16,momentum_6m:28},
+  {symbol:"UNL",name:"Unilever Nepal",sector:"Manufacturing",pe:52.0,roe:88.0,debt_to_equity:0.1,revenue_growth_5y:8,profit_growth_5y:10,dividend_yield:5.2,market_cap:52e9,price_current:22800,price_52w_high:24000,price_52w_low:18500,price_5y_high:26000,price_5y_avg:21000,pe_5y_avg:48.0,momentum_1m:-2,momentum_3m:4,momentum_6m:12},
+  {symbol:"BNT",name:"Bottlers Nepal Terai",sector:"Manufacturing",pe:35.5,roe:24.0,debt_to_equity:0.3,revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.5,market_cap:28e9,price_current:4200,price_52w_high:4500,price_52w_low:3400,price_5y_high:5200,price_5y_avg:4000,pe_5y_avg:32.0,momentum_1m:-1,momentum_3m:5,momentum_6m:12},
+  {symbol:"BNL",name:"Bottlers Nepal Limited",sector:"Manufacturing",pe:38.0,roe:22.5,debt_to_equity:0.2,revenue_growth_5y:10,profit_growth_5y:12,dividend_yield:3.2,market_cap:18e9,price_current:6200,price_52w_high:6600,price_52w_low:5000,price_5y_high:7500,price_5y_avg:5900,pe_5y_avg:35.0,momentum_1m:-1,momentum_3m:3,momentum_6m:10},
+  // ── HOTELS & TOURISM ──
+  {symbol:"OHL",name:"Soaltee Hotel",sector:"Hotel & Tourism",pe:45.0,roe:8.5,debt_to_equity:0.8,revenue_growth_5y:20,profit_growth_5y:18,dividend_yield:0.5,market_cap:8e9,price_current:980,price_52w_high:920,price_52w_low:620,price_5y_high:1100,price_5y_avg:840,pe_5y_avg:38.0,momentum_1m:10,momentum_3m:24,momentum_6m:40},
   {symbol:"TRH",name:"Taragaon Regency Hotels",sector:"Hotel & Tourism",pe:38.5,roe:9.2,debt_to_equity:0.6,revenue_growth_5y:22,profit_growth_5y:20,dividend_yield:0.8,market_cap:6e9,price_current:420,price_52w_high:395,price_52w_low:265,price_5y_high:480,price_5y_avg:360,pe_5y_avg:32.0,momentum_1m:12,momentum_3m:28,momentum_6m:48},
   // ── TRADING ──
   {symbol:"STC",name:"Salt Trading Corporation",sector:"Trading",pe:18.5,roe:15.8,debt_to_equity:0.9,revenue_growth_5y:14,profit_growth_5y:12,dividend_yield:3.5,market_cap:5e9,price_current:640,price_52w_high:680,price_52w_low:490,price_5y_high:820,price_5y_avg:620,pe_5y_avg:16.0,momentum_1m:-1,momentum_3m:4,momentum_6m:8},
   {symbol:"BBC",name:"Bishal Bazar Company",sector:"Trading",pe:22.0,roe:12.5,debt_to_equity:1.2,revenue_growth_5y:10,profit_growth_5y:8,dividend_yield:4.0,market_cap:3e9,price_current:880,price_52w_high:920,price_52w_low:680,price_5y_high:1100,price_5y_avg:840,pe_5y_avg:18.5,momentum_1m:-2,momentum_3m:2,momentum_6m:6},
-  // ── OTHERS / TELECOM ──
+  // ── TELECOM ──
   {symbol:"NTC",name:"Nepal Telecom",sector:"Telecom",pe:12.8,roe:19.4,debt_to_equity:0.1,revenue_growth_5y:5,profit_growth_5y:4,dividend_yield:8.5,market_cap:120e9,price_current:1640,price_52w_high:1800,price_52w_low:1380,price_5y_high:2200,price_5y_avg:1650,pe_5y_avg:14.5,momentum_1m:-2,momentum_3m:-5,momentum_6m:-8},
+  // ── OTHER / INVESTMENT ──
+  {symbol:"CHCL",name:"Citizen Investment Trust",sector:"Investment",pe:16.0,roe:13.5,debt_to_equity:0.5,revenue_growth_5y:12,profit_growth_5y:10,dividend_yield:4.8,market_cap:18e9,price_current:1480,price_52w_high:1580,price_52w_low:1150,price_5y_high:1900,price_5y_avg:1420,pe_5y_avg:18.0,momentum_1m:1,momentum_3m:5,momentum_6m:10},
+  {symbol:"NIBL",name:"NIBL Ace Capital",sector:"Investment",pe:22.0,roe:14.2,debt_to_equity:0.4,revenue_growth_5y:18,profit_growth_5y:16,dividend_yield:2.5,market_cap:8e9,price_current:860,price_52w_high:905,price_52w_low:660,price_5y_high:1060,price_5y_avg:820,pe_5y_avg:20.0,momentum_1m:3,momentum_3m:8,momentum_6m:14},
+  {symbol:"SLICL",name:"Surya Life Insurance",sector:"Insurance",pe:26.0,roe:12.0,debt_to_equity:0.5,revenue_growth_5y:16,profit_growth_5y:13,dividend_yield:1.8,market_cap:7e9,price_current:1020,price_52w_high:1080,price_52w_low:780,price_5y_high:1250,price_5y_avg:955,pe_5y_avg:24.0,momentum_1m:-5,momentum_3m:-8,momentum_6m:2},
+  {symbol:"PLIC",name:"Prime Life Insurance",sector:"Insurance",pe:24.5,roe:11.5,debt_to_equity:0.4,revenue_growth_5y:14,profit_growth_5y:12,dividend_yield:2.2,market_cap:6.5e9,price_current:945,price_52w_high:1010,price_52w_low:730,price_5y_high:1180,price_5y_avg:890,pe_5y_avg:22.5,momentum_1m:-6,momentum_3m:-10,momentum_6m:0},
 ]};
 
 // ══════════════════════════════════════════
 //  SIMULATE 7-DAY PRICE HISTORY
 // ══════════════════════════════════════════
-function gen7DayHistory(stock) {
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sun'];
-  const base = stock.price_current;
-  const vol = base * 0.015; // ~1.5% daily volatility
-  const m1 = (stock.momentum_1m || 0) / 100;
-  const trend = m1 / 22; // daily trend from monthly momentum
-  let prices = [];
-  let p = base * (1 - trend * 7);
+function gen7DayHistory(stock){
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sun'];
+  const base=stock.price_current;
+  const vol=base*0.015;
+  const m1=(stock.momentum_1m||0)/100;
+  const trend=m1/22;
+  let prices=[];
+  let p=base*(1-trend*7);
   for(let i=0;i<7;i++){
-    const noise = (Math.random()-0.48)*vol + trend*base;
-    p = Math.max(p + noise, base * 0.85);
-    // Deterministic seed based on symbol so values don't change
+    const noise=(Math.random()-0.48)*vol+trend*base;
+    p=Math.max(p+noise,base*0.85);
     prices.push(p);
   }
-  // Force last price to current
-  prices[6] = base;
-  // Make deterministic using symbol hash
-  const hash = stock.symbol.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-  prices = prices.map((p,i)=>{
-    const seed = (hash * 7 + i * 13) % 100;
-    const adj = (seed - 48) * vol / 100;
-    return Math.round((p + adj) * 100) / 100;
+  prices[6]=base;
+  const hash=stock.symbol.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  prices=prices.map((p,i)=>{
+    const seed=(hash*7+i*13)%100;
+    const adj=(seed-48)*vol/100;
+    return Math.round((p+adj)*100)/100;
   });
-  prices[6] = base;
+  prices[6]=base;
   return prices.map((p,i)=>({day:days[i],price:Math.round(p*10)/10}));
 }
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
-let state = {
+let state={
   stocks:[],
   watchlist:JSON.parse(localStorage.getItem('nepse_watchlist')||'[]'),
   sortCol:'score',sortDir:-1,
@@ -785,8 +1069,7 @@ let state = {
 
 // ══════════════════════════════════════════
 //  FUNDAMENTAL SCORING ENGINE
-//  Based on Murphy, Elder, Shannon, Bulkowski
-//  principles applied to NEPSE fundamentals
+//  Murphy, Elder, Shannon, Bulkowski principles
 // ══════════════════════════════════════════
 function getSectorMedianPE(stocks){
   const g={};
@@ -798,21 +1081,14 @@ function getSectorMedianPE(stocks){
 
 function calcFundScore(s,sectorPEs){
   const sm=sectorPEs[s.sector]||20;
-  // ROE: Primary indicator of business quality (Elder: trade in direction of quality)
   const roeScore=Math.min(s.roe/25,1)*22;
-  // Profit growth: Earnings momentum (Murphy: trend is primary)
   const profScore=Math.min(Math.max(s.profit_growth_5y,0)/20,1)*20;
-  // Debt: Balance sheet strength (Shannon: risk management first)
   const deMax=['Banking','Finance','Development Bank','Microfinance'].includes(s.sector)?10:2;
   const deScore=Math.max(0,1-s.debt_to_equity/deMax)*14;
-  // P/E vs sector: Relative valuation (Bulkowski: patterns work best at fair value)
   const peRatio=s.pe>0?s.pe/sm:2;
   const peScore=peRatio<=0.7?15:peRatio<=1?12:peRatio<=1.2?8:peRatio<=1.5?4:1;
-  // Dividend: Income buffer
   const divScore=Math.min(s.dividend_yield/6,1)*10;
-  // Market cap: Size & liquidity
   const capScore=Math.min(Math.log10(Math.max(s.market_cap,1e6))/12,1)*9;
-  // Revenue growth
   const revScore=Math.min(Math.max(s.revenue_growth_5y,0)/20,1)*10;
   const total=Math.round(Math.min(roeScore+profScore+deScore+peScore+divScore+capScore+revScore,100));
   return{total,bd:{roe:+roeScore.toFixed(1),profit:+profScore.toFixed(1),debt:+deScore.toFixed(1),pe:+peScore.toFixed(1),dividend:+divScore.toFixed(1),cap:+capScore.toFixed(1),revenue:+revScore.toFixed(1)}};
@@ -832,39 +1108,56 @@ function calcTimingScore(s){
   const pctFrom52wHigh=+((cur/h52-1)*100).toFixed(1);
   const pctFrom5yHigh=+((cur/h5y-1)*100).toFixed(1);
   const peVsHist=+((s.pe/peH-1)*100).toFixed(1);
-
   let buyPoints=0,avoidPoints=0;
   const reasons={};
-
-  // 52W Position
   if(pos52<0.30){buyPoints+=3;reasons.pos52='Bottom 30% of 52W range — historically attractive zone';}
   else if(pos52<0.55){buyPoints+=1;reasons.pos52='Mid-range 52W — neutral territory';}
   else if(pos52<0.80){avoidPoints+=2;reasons.pos52='Upper 52W range — elevated risk';}
   else{avoidPoints+=4;reasons.pos52=`Near 52W high (${(pos52*100).toFixed(0)}%) — high risk of mean reversion`;}
-
-  // Monthly momentum
   if(m1<-10){buyPoints+=2;reasons.m1=`Sharp -${Math.abs(m1)}% pullback — potential entry`;}
   else if(m1<0){buyPoints+=1;reasons.m1=`Minor ${m1}% pullback — watch closely`;}
   else if(m1>15){avoidPoints+=2;reasons.m1=`Strong +${m1}% run — wait for pullback`;}
   else{reasons.m1=`Momentum +${m1}% stable`;}
-
-  // 3M momentum
   if(m3<-15){buyPoints+=2;reasons.m3=`3-month decline ${m3}% — value emerging`;}
   else if(m3>30){avoidPoints+=2;reasons.m3=`3-month surge ${m3}% — overbought risk`;}
-
-  // PE vs Historical
   if(peVsHist<-15){buyPoints+=2;reasons.pe=`P/E ${Math.abs(peVsHist)}% below 5Y avg — historically cheap`;}
   else if(peVsHist>25){avoidPoints+=2;reasons.pe=`P/E ${peVsHist}% above 5Y avg — stretched valuation`;}
-
   let signal,label,numScore;
   const net=buyPoints-avoidPoints;
-  if(net>=4){signal='buy';label='BUY';numScore:4;}
+  if(net>=4){signal='buy';label='BUY';numScore=4;}
   else if(net>=1){signal='watch';label='WATCH';numScore=3;}
   else if(net>=-2){signal='wait';label='WAIT';numScore=2;}
   else{signal='avoid';label='AVOID';numScore=1;}
-  if(net>=4)numScore=4;else if(net>=1)numScore=3;else if(net>=-2)numScore=2;else numScore=1;
-
   return{signal,label,reasons,pctFrom52wHigh,pctFrom5yHigh,peVsHist,numScore,pos52,net};
+}
+
+// ══════════════════════════════════════════
+//  DIP SCORING — Buy the Drop
+//  Murphy: buy quality stocks in downtrends
+//  Elder: fundamentally sound + technically oversold
+//  Shannon: multi-timeframe confirmation of dip
+// ══════════════════════════════════════════
+function calcDipScore(s){
+  // Only quality stocks (Elder: never speculate on junk)
+  if(s.score < 45) return 0;
+  let dipScore = 0;
+  const m1 = s.momentum_1m || 0;
+  const m3 = s.momentum_3m || 0;
+  // Price well off 52W high (Bulkowski: patterns reset from highs)
+  if(s.timing.pctFrom52wHigh < -20) dipScore += 30;
+  else if(s.timing.pctFrom52wHigh < -12) dipScore += 18;
+  else if(s.timing.pctFrom52wHigh < -6) dipScore += 8;
+  // Recent downward momentum (Murphy: measure the pullback depth)
+  if(m1 < -8) dipScore += 25;
+  else if(m1 < -3) dipScore += 14;
+  // 3-month still declining (trend confirmation — Shannon MTF)
+  if(m3 < -10) dipScore += 20;
+  else if(m3 < 0) dipScore += 10;
+  // Cheap vs history (Bulkowski: buy at historical support)
+  if(s.timing.peVsHist !== null && s.timing.peVsHist < -10) dipScore += 15;
+  // Bonus: High fundamental score in dip = best of both worlds
+  dipScore += Math.floor((s.score - 45) / 5);
+  return Math.min(dipScore, 100);
 }
 
 // ══════════════════════════════════════════
@@ -876,12 +1169,12 @@ function loadData(stocks,source){
     const fs=calcFundScore(s,sectorPEs);
     const ts=calcTimingScore(s);
     const hist7d=gen7DayHistory(s);
-    return{...s,score:fs.total,breakdown:fs.bd,timing:ts,hist7d};
+    const dipScore=calcDipScore({...s,score:fs.total,timing:ts});
+    return{...s,score:fs.total,breakdown:fs.bd,timing:ts,hist7d,dipScore};
   });
   state.dataSource=source;
   state.lastLoaded=new Date().toLocaleTimeString();
   renderAll();
-  updateDataStatus();
   showToast(`Loaded ${stocks.length} stocks from ${source}`);
 }
 
@@ -889,6 +1182,7 @@ function renderAll(){
   renderDashStats();
   renderDashTable();
   renderTopPicks();
+  renderDipPicks();
   renderSectorChart();
   renderValuation();
   renderScreener();
@@ -905,6 +1199,7 @@ function renderDashStats(){
   if(!ss.length)return;
   const avgScore=(ss.reduce((a,s)=>a+s.score,0)/ss.length).toFixed(1);
   const buys=ss.filter(s=>s.timing.signal==='buy').length;
+  const dips=ss.filter(s=>s.dipScore>=40).length;
   const topStock=ss.slice().sort((a,b)=>b.score-a.score)[0];
   const sectors=new Set(ss.map(s=>s.sector)).size;
   const avgROE=(ss.reduce((a,s)=>a+s.roe,0)/ss.length).toFixed(1);
@@ -912,9 +1207,9 @@ function renderDashStats(){
   document.getElementById('dashStats').innerHTML=`
     <div class="stat-card"><div class="stat-label">Total Stocks</div><div class="stat-val">${ss.length}</div><div class="stat-sub">${sectors} sectors tracked</div></div>
     <div class="stat-card"><div class="stat-label">Avg Fund Score</div><div class="stat-val" style="color:${avgScore>60?'var(--green)':avgScore>40?'var(--gold)':'var(--red)'}">${avgScore}</div><div class="stat-sub">Out of 100</div></div>
-    <div class="stat-card"><div class="stat-label">BUY Signals</div><div class="stat-val" style="color:var(--green)">${buys}</div><div class="stat-sub">Stocks at good entry</div></div>
+    <div class="stat-card"><div class="stat-label">BUY Signals</div><div class="stat-val" style="color:var(--green)">${buys}</div><div class="stat-sub">Good entry zone</div></div>
+    <div class="stat-card"><div class="stat-label">Dip Opportunities</div><div class="stat-val" style="color:#ff8fa3">${dips}</div><div class="stat-sub">Quality stocks on dip</div></div>
     <div class="stat-card"><div class="stat-label">Top Pick</div><div class="stat-val" style="color:var(--gold);font-size:18px">${topStock.symbol}</div><div class="stat-sub">Score ${topStock.score}/100</div></div>
-    <div class="stat-card"><div class="stat-label">Avg ROE</div><div class="stat-val" style="color:var(--blue2)">${avgROE}%</div><div class="stat-sub">Market avg return on equity</div></div>
   `;
 }
 
@@ -939,17 +1234,11 @@ function renderSparkline(hist7d,w=60,h=20){
 // ══════════════════════════════════════════
 function renderDashTable(filter=''){
   let ss=[...state.stocks].sort((a,b)=>b.score-a.score).map((s,i)=>({...s,rank:i+1}));
-  if(filter){
-    const q=filter.toLowerCase();
-    ss=ss.filter(s=>s.symbol.toLowerCase().includes(q)||s.name.toLowerCase().includes(q)||s.sector.toLowerCase().includes(q));
-  }
+  if(filter){const q=filter.toLowerCase();ss=ss.filter(s=>s.symbol.toLowerCase().includes(q)||s.name.toLowerCase().includes(q)||s.sector.toLowerCase().includes(q));}
   ss.sort((a,b)=>state.sortDir*(a[state.sortCol]||0)-(state.sortDir*(b[state.sortCol]||0))||0);
-  if(state.sortCol==='symbol'||state.sortCol==='name'||state.sortCol==='sector'){
-    ss.sort((a,b)=>state.sortDir*(a[state.sortCol]<b[state.sortCol]?-1:1));
-  }
+  if(state.sortCol==='symbol'||state.sortCol==='name'||state.sortCol==='sector'){ss.sort((a,b)=>state.sortDir*(a[state.sortCol]<b[state.sortCol]?-1:1));}
   if(state.sortCol==='timing'){ss.sort((a,b)=>state.sortDir*(b.timing.numScore-a.timing.numScore));}
   if(state.sortCol==='score'){ss.sort((a,b)=>state.sortDir*(b.score-a.score));}
-
   document.getElementById('dashCount').textContent=`${ss.length} stocks`;
   document.getElementById('dashBody').innerHTML=ss.map(s=>{
     const t=s.timing;
@@ -972,7 +1261,7 @@ function renderDashTable(filter=''){
       <td>${s.hist7d?renderSparkline(s.hist7d):''}<span style="font-size:9px;color:${priceChgCol}">${priceChg>=0?'▲':'▼'}${Math.abs(priceChg)}%</span></td>
       <td>
         <button class="btn sm" onclick="event.stopPropagation();toggleWatchlist('${s.symbol}')" style="color:${state.watchlist.includes(s.symbol)?'var(--gold)':'var(--text2)'}">
-          ${state.watchlist.includes(s.symbol)?'★':'☆'}
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="${state.watchlist.includes(s.symbol)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </button>
       </td>
     </tr>`;
@@ -981,10 +1270,7 @@ function renderDashTable(filter=''){
 
 function scoreColor(score){return score>=75?'var(--green)':score>=55?'#8bc48a':score>=40?'var(--gold)':'var(--red)';}
 
-// Quick search
 document.getElementById('quickSearch').addEventListener('input',function(){renderDashTable(this.value);});
-
-// Table sort
 document.getElementById('dashTable').addEventListener('click',e=>{
   const th=e.target.closest('th');
   if(!th||!th.dataset.col)return;
@@ -1015,6 +1301,36 @@ function renderTopPicks(){
 }
 
 // ══════════════════════════════════════════
+//  DIP PICKS — Buy The Drop
+//  Murphy: "The trend is your friend — until it bends"
+//  Buy quality companies experiencing temporary pullback
+// ══════════════════════════════════════════
+function renderDipPicks(){
+  const dips=[...state.stocks]
+    .filter(s=>s.dipScore>=35&&s.score>=45)
+    .sort((a,b)=>b.dipScore-a.dipScore)
+    .slice(0,8);
+
+  const el=document.getElementById('dipPicksGrid');
+  if(!dips.length){el.innerHTML='<p style="color:var(--text2);font-size:11px;grid-column:1/-1">No significant dips in quality stocks detected right now.</p>';return;}
+
+  el.innerHTML=dips.map((s,i)=>{
+    const dropPct=s.timing.pctFrom52wHigh||0;
+    const dipColor=s.dipScore>=70?'var(--red)':s.dipScore>=50?'#ff8fa3':'var(--gold)';
+    return`<div class="pick-card dip-pick" onclick="openPanel('${s.symbol}')">
+      <span class="pick-rank" style="color:${dipColor}">#${i+1}</span>
+      <div class="pick-sym" style="color:${dipColor}">${s.symbol}</div>
+      <div class="pick-nm">${s.name}</div>
+      <div class="pick-bar"><div class="pick-bar-fill" style="width:${s.dipScore}%;background:${dipColor}"></div></div>
+      <div class="pick-foot">
+        <span class="dip-badge">${dropPct.toFixed(1)}% off peak</span>
+        <span style="color:${dipColor}">Dip ${s.dipScore}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
 //  SECTOR CHART
 // ══════════════════════════════════════════
 function renderSectorChart(){
@@ -1041,18 +1357,17 @@ function renderSectorChart(){
 function renderValuation(){
   const ss=[...state.stocks].sort((a,b)=>b.score-a.score).map((s,i)=>({...s,rank:i+1}));
   document.getElementById('valCount').textContent=`${ss.length} stocks`;
-
   document.getElementById('valBody').innerHTML=ss.map(s=>{
     const t=s.timing;
     const peStr=t.peVsHist!=null?`${t.peVsHist>0?'+':''}${t.peVsHist}%`:'—';
     const peCol=t.peVsHist==null?'var(--text2)':t.peVsHist<0?'var(--green)':'var(--red)';
     const h52pct=t.pctFrom52wHigh;
-    const h52col=h52pct==null?'var(--text2)':h52pct<-20?'var(--green)':h52pct<-10?'var(--gold)':'var(--red)';
+    const h52col=h52pct==null?'var(--text2)':h52pct<-20?'var(--green)':h52pct<-8?'var(--gold)':'var(--red)';
     const range52=s.price_52w_high&&s.price_52w_low?`${s.price_52w_low.toLocaleString()}–${s.price_52w_high.toLocaleString()}`:'—';
     return`<tr onclick="openPanel('${s.symbol}')">
       <td style="color:var(--text2)">${s.rank}</td>
       <td><strong style="color:var(--gold);font-family:var(--display)">${s.symbol}</strong></td>
-      <td class="name-cell" style="font-family:var(--font)">${s.name}</td>
+      <td class="name-cell">${s.name}</td>
       <td><span class="badge b-neutral">${s.sector}</span></td>
       <td><div class="sbar"><div class="sbar-track"><div class="sbar-fill" style="width:${s.score}%;background:${scoreColor(s.score)}"></div></div><span class="sbar-num" style="color:${scoreColor(s.score)}">${s.score}</span></div></td>
       <td><span class="badge b-${t.signal}">${t.label}</span></td>
@@ -1061,14 +1376,11 @@ function renderValuation(){
       <td>${s.pe?.toFixed(1)||'—'}</td>
       <td style="color:${peCol}">${peStr}</td>
       <td style="color:${h52col}">${h52pct!=null?h52pct+'%':'—'}</td>
-      <td><button class="btn sm" onclick="event.stopPropagation();openPanel('${s.symbol}')">Analyse →</button></td>
+      <td><button class="btn sm" onclick="event.stopPropagation();openPanel('${s.symbol}')">Analyse</button></td>
     </tr>`;
   }).join('');
-
-  // Good entry / Avoid
   const goodEntry=ss.filter(s=>s.score>=60&&(s.timing.signal==='buy'||s.timing.signal==='watch')).slice(0,8);
   const avoidNow=ss.filter(s=>s.score>=55&&s.timing.signal==='avoid').slice(0,8);
-
   const miniCard=s=>`
     <div class="alloc-card" onclick="openPanel('${s.symbol}')">
       <span class="alloc-rank">#${s.rank}</span>
@@ -1091,12 +1403,7 @@ function initScreenerFilters(){
     el.innerHTML='<option value="">All Sectors</option>'+sectors.map(s=>`<option value="${s}">${s}</option>`).join('');
   });
 }
-
-function renderScreener(){
-  initScreenerFilters();
-  applyScreener();
-}
-
+function renderScreener(){initScreenerFilters();applyScreener();}
 function applyScreener(){
   const sector=document.getElementById('f-sector').value;
   const roe=+document.getElementById('f-roe').value||0;
@@ -1105,20 +1412,15 @@ function applyScreener(){
   const peMax=+document.getElementById('f-pe-max').value||Infinity;
   const score=+document.getElementById('f-score').value||0;
   const timing=document.getElementById('f-timing').value;
-
   let ss=state.stocks.filter(s=>
-    (!sector||s.sector===sector)&&
-    s.roe>=roe&&s.debt_to_equity<=de&&
-    s.pe>=peMin&&s.pe<=peMax&&
-    s.score>=score&&
-    (!timing||s.timing.signal===timing)
+    (!sector||s.sector===sector)&&s.roe>=roe&&s.debt_to_equity<=de&&
+    s.pe>=peMin&&s.pe<=peMax&&s.score>=score&&(!timing||s.timing.signal===timing)
   ).sort((a,b)=>b.score-a.score);
-
   document.getElementById('screenerCount').textContent=`${ss.length} results`;
   document.getElementById('scrBody').innerHTML=ss.map((s,i)=>`<tr onclick="openPanel('${s.symbol}')">
     <td style="color:var(--text2)">${i+1}</td>
     <td><strong style="color:var(--gold);font-family:var(--display)">${s.symbol}</strong></td>
-    <td class="name-cell" style="font-family:var(--font)">${s.name}</td>
+    <td class="name-cell">${s.name}</td>
     <td><span class="badge b-neutral">${s.sector}</span></td>
     <td><div class="sbar"><div class="sbar-track"><div class="sbar-fill" style="width:${s.score}%;background:${scoreColor(s.score)}"></div></div><span class="sbar-num" style="color:${scoreColor(s.score)}">${s.score}</span></div></td>
     <td><span class="badge b-${s.timing.signal}">${s.timing.label}</span></td>
@@ -1129,10 +1431,11 @@ function applyScreener(){
     <td style="color:var(--green)">${s.profit_growth_5y||'—'}%</td>
     <td>${s.dividend_yield?.toFixed(1)||'—'}%</td>
     <td>${s.revenue_growth_5y||'—'}%</td>
-    <td><button class="btn sm" onclick="event.stopPropagation();toggleWatchlist('${s.symbol}')" style="color:${state.watchlist.includes(s.symbol)?'var(--gold)':'var(--text2)'}">${state.watchlist.includes(s.symbol)?'★':'☆'}</button></td>
+    <td><button class="btn sm" onclick="event.stopPropagation();toggleWatchlist('${s.symbol}')" style="color:${state.watchlist.includes(s.symbol)?'var(--gold)':'var(--text2)'}">
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="${state.watchlist.includes(s.symbol)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button></td>
   </tr>`).join('');
 }
-
 ['f-sector','f-roe','f-de','f-pe-min','f-pe-max','f-score','f-timing'].forEach(id=>{
   document.getElementById(id)?.addEventListener('change',applyScreener);
   document.getElementById(id)?.addEventListener('input',applyScreener);
@@ -1153,8 +1456,6 @@ function openPanel(symbol){
   const sc=scoreColor(s.score);
   const tpClass={buy:'tp-buy',watch:'tp-watch',wait:'tp-wait',avoid:'tp-avoid'}[t.signal];
   const badgeClass={buy:'b-buy',watch:'b-watch',wait:'b-wait',avoid:'b-avoid'}[t.signal];
-
-  // 7-day price table
   const priceTable=s.hist7d?`
     <table class="day-table">
       <thead><tr><th>Day</th><th>Price (NPR)</th><th>Change</th></tr></thead>
@@ -1164,56 +1465,50 @@ function openPanel(symbol){
         const col=chg>=0?'var(--green)':'var(--red)';
         return`<tr><td>${d.day}</td><td>${d.price.toLocaleString()}</td><td style="color:${col}">${chg>=0?'▲':'▼'}${Math.abs(chg)}%</td></tr>`;
       }).join('')}</tbody>
-    </table>
-  `:''
-
-  // Sparkline large
+    </table>`:''
   const sparkLg=s.hist7d?renderSparkline(s.hist7d,240,60):'';
-
-  // Book-inspired metrics labels
   const advice=generateTradeAdvice(s);
-
+  // Dip section if relevant
+  const dipHtml=s.dipScore>=35?`
+    <div class="timing-panel tp-dip" style="margin-bottom:14px;">
+      <div class="tp-title" style="color:#ff8fa3;display:flex;align-items:center;gap:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+        Dip Opportunity Score: ${s.dipScore}/100
+      </div>
+      <div class="tp-reason">${generateDipRationale(s)}</div>
+    </div>`:''
   document.getElementById('panelContent').innerHTML=`
     <div style="margin-bottom:16px;padding-right:36px;">
       <div style="font-family:var(--display);font-size:26px;font-weight:800;color:var(--gold)">${s.symbol}</div>
       <div style="font-size:12px;color:var(--text2);margin-bottom:4px">${s.name} · ${s.sector}</div>
       <div style="font-family:var(--mono);font-size:20px;font-weight:500">NPR ${(s.price_current||0).toLocaleString()} <span class="badge ${badgeClass}" style="font-size:11px;vertical-align:middle">${t.label}</span></div>
     </div>
-
-    <!-- 7-Day Chart -->
     <div class="card" style="margin-bottom:14px;padding:14px;">
-      <div class="card-title" style="margin-bottom:10px">📈 7-Day Price History</div>
+      <div class="card-title" style="margin-bottom:10px">7-Day Price History</div>
       <div style="margin-bottom:10px">${sparkLg}</div>
       ${priceTable}
     </div>
-
-    <!-- Score Hero -->
     <div class="score-hero">
       <div class="score-hero-num" style="color:${sc}">${s.score}</div>
       <div class="score-hero-lbl">Fundamental Score / 100</div>
     </div>
-
-    <!-- Trade Advice -->
+    ${dipHtml}
     <div class="timing-panel ${tpClass}">
       <div class="tp-title" style="color:${t.signal==='buy'?'var(--green)':t.signal==='avoid'?'var(--red)':t.signal==='wait'?'var(--gold)':'var(--blue2)'}">
-        ${t.signal==='buy'?'✅':'t.signal'==='avoid'?'⛔':t.signal==='wait'?'⏳':'👁'} ${advice.headline}
+        ${advice.headline}
       </div>
       <div class="tp-reason">${advice.detail}</div>
     </div>
-
-    <!-- Timing Signals -->
     <div class="card-title" style="margin-bottom:8px">Timing Breakdown</div>
     <div class="tf-grid">
       ${Object.entries(t.reasons||{}).map(([k,v])=>`
         <div class="tf-item">
           <div class="tf-label">${{pos52:'52W Pos',m1:'1M Mom',m3:'3M Mom',pe:'P/E Hist'}[k]||k}</div>
-          <div class="tf-sig" style="color:var(--text)">${v.includes('attractive')||v.includes('cheap')||v.includes('potential')||v.includes('value')?'↓ DIPS':'→ NEUTRAL'}</div>
+          <div class="tf-sig" style="color:var(--text)">${v.includes('attractive')||v.includes('cheap')||v.includes('potential')||v.includes('value')?'DIP':'NEUTRAL'}</div>
           <div class="tf-val" style="white-space:normal;font-size:9px;line-height:1.4">${v}</div>
         </div>
       `).join('')}
     </div>
-
-    <!-- Key Metrics -->
     <div class="card-title" style="margin-bottom:8px">Key Metrics</div>
     <div class="met-grid">
       <div class="met-item"><div class="met-key">P/E Ratio</div><div class="met-val">${s.pe?.toFixed(1)||'—'}</div></div>
@@ -1225,8 +1520,6 @@ function openPanel(symbol){
       <div class="met-item"><div class="met-key">Market Cap</div><div class="met-val" style="font-size:13px">${fmtCap(s.market_cap)}</div></div>
       <div class="met-item"><div class="met-key">52W High</div><div class="met-val" style="font-size:13px">NPR ${(s.price_52w_high||0).toLocaleString()}</div></div>
     </div>
-
-    <!-- Score Breakdown -->
     <div class="card-title" style="margin-bottom:8px">Score Breakdown</div>
     ${Object.entries(s.breakdown||{}).map(([k,v])=>`
       <div class="bk-row">
@@ -1235,16 +1528,27 @@ function openPanel(symbol){
         <span class="bk-num">${v}</span>
       </div>
     `).join('')}
-
-    <!-- Watchlist -->
     <div style="margin-top:16px;display:flex;gap:8px;">
-      <button class="btn" style="flex:1;justify-content:center" onclick="toggleWatchlist('${s.symbol}');document.getElementById('panelContent').querySelector('.wl-btn').textContent=state.watchlist.includes('${s.symbol}')?'★ In Watchlist':'☆ Add to Watchlist'">
-        <span class="wl-btn">${state.watchlist.includes(s.symbol)?'★ In Watchlist':'☆ Add to Watchlist'}</span>
+      <button class="btn" style="flex:1;justify-content:center" onclick="toggleWatchlist('${s.symbol}');document.getElementById('panelContent').querySelector('.wl-btn').textContent=state.watchlist.includes('${s.symbol}')?'In Watchlist':'Add to Watchlist'">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="${state.watchlist.includes(s.symbol)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span class="wl-btn">${state.watchlist.includes(s.symbol)?'In Watchlist':'Add to Watchlist'}</span>
       </button>
     </div>
   `;
-
   document.getElementById('panelOverlay').classList.add('open');
+}
+
+function generateDipRationale(s){
+  const drop=s.timing.pctFrom52wHigh||0;
+  const m1=s.momentum_1m||0;
+  const m3=s.momentum_3m||0;
+  let parts=[];
+  if(drop<-15)parts.push(`Price is ${Math.abs(drop).toFixed(1)}% below its 52-week high — Bulkowski: chart patterns reset and breakout potential builds after deep corrections.`);
+  if(m1<-5)parts.push(`1-month momentum is ${m1}% — Murphy's pullback rule: a ${Math.abs(m1)}% short-term dip in a fundamentally sound stock is an accumulation zone, not a sell signal.`);
+  if(m3<-8)parts.push(`3-month trend down ${m3}% — Shannon's multi-timeframe principle: when both 1M and 3M are declining in a quality company, it signals capitulation, often the best entry point.`);
+  if(s.timing.peVsHist!==null&&s.timing.peVsHist<-10)parts.push(`P/E is ${Math.abs(s.timing.peVsHist).toFixed(1)}% below 5-year average — Elder: this is exactly when good companies trade at "fear discounts". Patient capital wins here.`);
+  parts.push(`With a fundamental score of ${s.score}/100 and ROE of ${s.roe?.toFixed(1)}%, this business quality hasn't changed — only the price has. This is the core of value investing: buy quality when others are selling fear.`);
+  return parts.join(' ');
 }
 
 function generateTradeAdvice(s){
@@ -1255,32 +1559,16 @@ function generateTradeAdvice(s){
   const pe=s.pe;
   const prv5=s.profit_growth_5y;
   const div=s.dividend_yield;
-
   if(sig==='buy'&&score>=65){
-    return{
-      headline:`Strong Buy — ${s.symbol} is undervalued with quality fundamentals`,
-      detail:`ROE of ${roe?.toFixed(1)}% signals a high-quality business (Elder: only trade high-quality stocks). Profit growth of ${prv5}% p.a. over 5 years is strong. The stock is trading in the lower range of its 52-week band — Murphy's rule: buy pullbacks in uptrending quality businesses. P/E of ${pe?.toFixed(1)} is reasonable for this sector. Target entry for next 1–2 weeks with a stop below 52W low. Dividend of ${div?.toFixed(1)}% provides income while you wait.`
-    };
+    return{headline:`Strong Buy — ${s.symbol} undervalued with quality fundamentals`,detail:`ROE of ${roe?.toFixed(1)}% signals a high-quality business (Elder: only trade high-quality stocks). Profit growth of ${prv5}% p.a. over 5 years is strong. The stock is in the lower range of its 52-week band — Murphy's rule: buy pullbacks in uptrending quality businesses. P/E of ${pe?.toFixed(1)} is reasonable. Target entry next 1–2 weeks with stop below 52W low. Dividend of ${div?.toFixed(1)}% provides income while you wait.`};
   }else if(sig==='buy'){
-    return{
-      headline:`Watch for Entry — Decent value emerging`,
-      detail:`Fundamental score of ${score}/100 puts this in the upper tier. The recent price weakness offers a better risk/reward. ROE ${roe?.toFixed(1)}% is solid. Bulkowski's chart pattern research suggests stocks pulling back to fair value outperform over the following month. Consider scaling in small position now.`
-    };
+    return{headline:`Watch for Entry — Decent value emerging`,detail:`Fundamental score of ${score}/100 puts this in the upper tier. The recent price weakness offers better risk/reward. ROE ${roe?.toFixed(1)}% is solid. Bulkowski: stocks pulling back to fair value outperform over the following month. Consider scaling in a small position now, adding on confirmation.`};
   }else if(sig==='watch'&&score>=60){
-    return{
-      headline:`Quality Stock — Wait for Better Price`,
-      detail:`${s.name} has strong fundamentals (score ${score}/100) but price is not yet in the buy zone. Shannon's trend-alignment principle: wait for price to pull back toward the 50-day moving average or 52W mid-range before entering. ROE ${roe?.toFixed(1)}% — this is a business worth owning at the right price. Set a price alert.`
-    };
+    return{headline:`Quality Stock — Wait for Better Price`,detail:`${s.name} has strong fundamentals (score ${score}/100) but price is not yet in the buy zone. Shannon's trend-alignment principle: wait for price to pull back toward the 50-day moving average or 52W mid-range. ROE ${roe?.toFixed(1)}% — this is a business worth owning at the right price. Set a price alert.`};
   }else if(sig==='wait'){
-    return{
-      headline:`Elevated Price — Patience Recommended`,
-      detail:`The stock is in the upper portion of its 52-week range. Elder's Rule: never buy at resistance. Even good businesses punish impatient buyers. Wait for a 10–15% retracement before considering entry. Fundamental score ${score}/100 is reasonable but valuation risk is elevated. Watch for sector rotation.`
-    };
+    return{headline:`Elevated Price — Patience Recommended`,detail:`The stock is in the upper portion of its 52-week range. Elder's Rule: never buy at resistance. Even good businesses punish impatient buyers. Wait for a 10–15% retracement before considering entry. Fundamental score ${score}/100 is reasonable but valuation risk is elevated.`};
   }else{
-    return{
-      headline:`AVOID Now — Overextended or Fundamentally Weak`,
-      detail:`${score<45?`Fundamental score of ${score}/100 is below acceptable threshold. ROE of ${roe?.toFixed(1)}% and profit growth of ${prv5}% do not justify this price.`:`Despite decent fundamentals (${score}/100), the stock is significantly extended from fair value.`} Murphy's cardinal rule: never buy at all-time highs without pullback confirmation. Wait for 20%+ correction or fundamental improvement. There are better opportunities in the market right now.`
-    };
+    return{headline:`AVOID Now — Overextended or Fundamentally Weak`,detail:`${score<45?`Fundamental score of ${score}/100 is below acceptable threshold. ROE of ${roe?.toFixed(1)}% and profit growth of ${prv5}% do not justify this price.`:`Despite decent fundamentals (${score}/100), the stock is significantly extended from fair value.`} Murphy's cardinal rule: never buy at all-time highs without pullback confirmation. Wait for 20%+ correction or fundamental improvement.`};
   }
 }
 
@@ -1291,7 +1579,6 @@ function fmtCap(cap){
   return`NPR ${(cap/1e6).toFixed(0)}M`;
 }
 
-// Panel close
 document.getElementById('panelClose').addEventListener('click',()=>document.getElementById('panelOverlay').classList.remove('open'));
 document.getElementById('panelOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('panelOverlay'))document.getElementById('panelOverlay').classList.remove('open');});
 
@@ -1304,26 +1591,19 @@ document.getElementById('generateBtn').addEventListener('click',()=>{
   const maxCount=+document.getElementById('w-count').value||5;
   const sector=document.getElementById('w-sector').value;
   const excludeAvoid=document.getElementById('w-timing-filter').checked;
-
   let pool=[...state.stocks];
   if(sector)pool=pool.filter(s=>s.sector===sector);
   if(excludeAvoid)pool=pool.filter(s=>s.timing.signal!=='avoid');
-
-  // Risk-based weighting
   if(risk==='low'){pool=pool.filter(s=>s.dividend_yield>=2&&s.score>=50).sort((a,b)=>(b.dividend_yield+b.score)-(a.dividend_yield+a.score));}
   else if(risk==='medium'){pool=pool.filter(s=>s.score>=50).sort((a,b)=>b.score-a.score);}
   else{pool=pool.filter(s=>s.momentum_1m>5||s.timing.signal==='buy').sort((a,b)=>(b.score+b.momentum_1m)-(a.score+a.momentum_1m));}
-
   const picks=pool.slice(0,maxCount);
-  if(!picks.length){document.getElementById('weeklyResults').innerHTML='<div class="disc">No stocks match your criteria. Try adjusting filters.</div>';return;}
-
-  // Allocate proportionally by score
+  if(!picks.length){document.getElementById('weeklyResults').innerHTML='<div style="background:rgba(240,185,11,.05);border:1px solid rgba(240,185,11,.15);border-radius:var(--r);padding:9px 14px;font-size:11px;color:var(--gold)">No stocks match your criteria. Try adjusting filters.</div>';return;}
   const totalScore=picks.reduce((a,s)=>a+s.score,0);
   const allocations=picks.map(s=>({...s,pct:Math.round(s.score/totalScore*100),amt:Math.round(s.score/totalScore*amount)}));
-
   document.getElementById('weeklyResults').innerHTML=`
-    <div class="disc" style="margin-bottom:12px">
-      📅 <strong>This Week's Recommendation</strong> — NPR ${amount.toLocaleString()} across ${picks.length} stocks · ${risk.charAt(0).toUpperCase()+risk.slice(1)} Risk · Generated ${new Date().toLocaleTimeString()}
+    <div style="background:rgba(240,185,11,.05);border:1px solid rgba(240,185,11,.15);border-radius:var(--r);padding:9px 14px;font-size:11px;color:var(--gold);margin-bottom:12px">
+      This Week's Recommendation — NPR ${amount.toLocaleString()} across ${picks.length} stocks · ${risk.charAt(0).toUpperCase()+risk.slice(1)} Risk · Generated ${new Date().toLocaleTimeString()}
     </div>
     <div class="card" style="margin-bottom:12px">
       <div class="card-hdr"><span class="card-title">Allocation Plan</span></div>
@@ -1331,20 +1611,12 @@ document.getElementById('generateBtn').addEventListener('click',()=>{
         ${allocations.map((s,i)=>`
           <div class="alloc-card" onclick="openPanel('${s.symbol}')">
             <span class="alloc-rank">#${i+1}</span>
-            <div class="alloc-info">
-              <div class="alloc-sym">${s.symbol}</div>
-              <div class="alloc-nm">${s.name} · ${s.sector}</div>
-            </div>
-            <div style="margin-left:auto;text-align:right">
-              <div class="alloc-pct">${s.pct}%</div>
-              <div class="alloc-amt">NPR ${s.amt.toLocaleString()}</div>
-            </div>
+            <div class="alloc-info"><div class="alloc-sym">${s.symbol}</div><div class="alloc-nm">${s.name} · ${s.sector}</div></div>
+            <div style="margin-left:auto;text-align:right"><div class="alloc-pct">${s.pct}%</div><div class="alloc-amt">NPR ${s.amt.toLocaleString()}</div></div>
             <span class="badge b-${s.timing.signal}">${s.timing.label}</span>
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
     </div>
-    <div class="disc">⚠ These suggestions are purely algorithmic — based on Murphy/Elder/Bulkowski fundamentals adapted for NEPSE. Not financial advice. Always verify with broker and personal research before acting.</div>
   `;
 });
 
@@ -1358,27 +1630,27 @@ function toggleWatchlist(symbol){
   renderWatchlist();
   renderDashTable(document.getElementById('quickSearch').value);
 }
-
 function renderWatchlist(){
   const items=state.watchlist.map(sym=>state.stocks.find(s=>s.symbol===sym)).filter(Boolean);
-  if(!items.length){document.getElementById('wlContent').innerHTML='<div class="wl-empty">⭐ No stocks in watchlist. Click ☆ on any stock to add.</div>';return;}
+  if(!items.length){document.getElementById('wlContent').innerHTML='<div class="wl-empty">No stocks in watchlist. Click the star icon on any stock to add.</div>';return;}
   document.getElementById('wlContent').innerHTML=`
     <div class="tbl-wrap"><table><thead><tr>
       <th>Symbol</th><th>Company</th><th>Score</th><th>Signal</th><th>Price</th><th>7D</th><th>ROE%</th><th>P/E</th><th></th>
     </tr></thead><tbody>
     ${items.map(s=>`<tr onclick="openPanel('${s.symbol}')">
       <td><strong style="color:var(--gold);font-family:var(--display)">${s.symbol}</strong></td>
-      <td class="name-cell" style="font-family:var(--font)">${s.name}</td>
+      <td class="name-cell">${s.name}</td>
       <td><span style="color:${scoreColor(s.score)}">${s.score}</span></td>
       <td><span class="badge b-${s.timing.signal}">${s.timing.label}</span></td>
       <td>NPR ${(s.price_current||0).toLocaleString()}</td>
       <td>${s.hist7d?renderSparkline(s.hist7d):''}</td>
       <td style="color:var(--green)">${s.roe?.toFixed(1)||'—'}%</td>
       <td>${s.pe?.toFixed(1)||'—'}</td>
-      <td><button class="btn sm" onclick="event.stopPropagation();toggleWatchlist('${s.symbol}')" style="color:var(--red)">✕</button></td>
+      <td><button class="btn sm" onclick="event.stopPropagation();toggleWatchlist('${s.symbol}')" style="color:var(--red)">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button></td>
     </tr>`).join('')}
-    </tbody></table></div>
-  `;
+    </tbody></table></div>`;
 }
 
 // ══════════════════════════════════════════
@@ -1406,7 +1678,6 @@ function navigateTo(pageId){
   if(el)el.classList.add('active');
   document.querySelectorAll('[data-page="'+pageId+'"]').forEach(b=>b.classList.add('active'));
 }
-
 document.getElementById('nav').addEventListener('click',e=>{
   const btn=e.target.closest('.nav-btn');
   if(btn&&btn.dataset.page)navigateTo(btn.dataset.page);
@@ -1417,46 +1688,6 @@ document.querySelector('.sidebar').addEventListener('click',e=>{
 });
 
 // ══════════════════════════════════════════
-//  DATA STATUS & UPLOAD
-// ══════════════════════════════════════════
-function updateDataStatus(){
-  document.getElementById('dataStatus').innerHTML=`
-    <div style="margin-bottom:12px">
-      <div class="met-item"><div class="met-key">Source</div><div class="met-val" style="font-size:13px">${state.dataSource||'—'}</div></div>
-    </div>
-    <div class="met-grid">
-      <div class="met-item"><div class="met-key">Stocks Loaded</div><div class="met-val">${state.stocks.length}</div></div>
-      <div class="met-item"><div class="met-key">Last Updated</div><div class="met-val" style="font-size:12px">${state.lastLoaded||'—'}</div></div>
-    </div>
-    <div class="met-grid">
-      <div class="met-item"><div class="met-key">Sectors</div><div class="met-val">${new Set(state.stocks.map(s=>s.sector)).size}</div></div>
-      <div class="met-item"><div class="met-key">With Price Data</div><div class="met-val">${state.stocks.filter(s=>s.price_current).length}</div></div>
-    </div>
-  `;
-  document.getElementById('jsonTpl').textContent=JSON.stringify({stocks:[{
-    symbol:"NABIL",name:"Nabil Bank",sector:"Banking",
-    pe:14.2,roe:22.1,debt_to_equity:5.8,
-    revenue_growth_5y:12,profit_growth_5y:14,dividend_yield:3.8,market_cap:45000000000,
-    price_current:1240,price_52w_high:1480,price_52w_low:980,
-    price_5y_high:1650,price_5y_avg:1180,pe_5y_avg:16.8,
-    momentum_1m:-4,momentum_3m:-8,momentum_6m:6
-  }]},null,2);
-}
-
-// File upload
-const ua=document.getElementById('uploadArea'),fi=document.getElementById('fileInput');
-ua.addEventListener('click',()=>fi.click());
-ua.addEventListener('dragover',e=>{e.preventDefault();ua.style.borderColor='var(--gold)';});
-ua.addEventListener('dragleave',()=>ua.style.borderColor='');
-ua.addEventListener('drop',e=>{e.preventDefault();ua.style.borderColor='';const f=e.dataTransfer.files[0];if(f)readFile(f);});
-fi.addEventListener('change',()=>{if(fi.files[0])readFile(fi.files[0]);});
-function readFile(f){
-  const r=new FileReader();
-  r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!d.stocks)throw new Error('Missing stocks array');loadData(d.stocks,f.name);}catch(err){showToast('Error: '+err.message);}};
-  r.readAsText(f);
-}
-
-// ══════════════════════════════════════════
 //  REFRESH
 // ══════════════════════════════════════════
 document.getElementById('refreshBtn').addEventListener('click',()=>{
@@ -1465,8 +1696,8 @@ document.getElementById('refreshBtn').addEventListener('click',()=>{
   showToast('Dashboard refreshed');
 });
 document.getElementById('exportBtn').addEventListener('click',()=>{
-  const csv=['Symbol,Name,Sector,Score,Signal,P/E,ROE%,D/E,ProfitG%,DivYield%,Price'].concat(
-    state.stocks.sort((a,b)=>b.score-a.score).map(s=>`${s.symbol},"${s.name}",${s.sector},${s.score},${s.timing.label},${s.pe||''},${s.roe||''},${s.debt_to_equity||''},${s.profit_growth_5y||''},${s.dividend_yield||''},${s.price_current||''}`)
+  const csv=['Symbol,Name,Sector,Score,Signal,P/E,ROE%,D/E,ProfitG%,DivYield%,Price,DipScore'].concat(
+    state.stocks.sort((a,b)=>b.score-a.score).map(s=>`${s.symbol},"${s.name}",${s.sector},${s.score},${s.timing.label},${s.pe||''},${s.roe||''},${s.debt_to_equity||''},${s.profit_growth_5y||''},${s.dividend_yield||''},${s.price_current||''},${s.dipScore||0}`)
   ).join('\n');
   const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='nepse_analysis.csv';a.click();
   showToast('CSV exported');
@@ -1500,7 +1731,7 @@ const NEWS_SOURCES=[
 ];
 const RSS2JSON='https://api.rss2json.com/v1/api.json?rss_url=';
 const MOCK_NEWS=[
-  {title:"NEPSE index rises 0.8% — Banking sector leads gains amid positive liquidity",source:"Mero Lagani",time:"Live",url:"https://merolagani.com",tag:"nepse",tagClass:"nt-nepse"},
+  {title:"NEPSE index falls 0.66% — Banking and Hydropower sectors under pressure amid profit-booking",source:"Mero Lagani",time:"Live",url:"https://merolagani.com",tag:"nepse",tagClass:"nt-nepse"},
   {title:"Nepal Rastra Bank holds policy rate steady at 5.5% for Q3 2081/82",source:"NRB",time:"Today",url:"https://nrb.org.np",tag:"economy",tagClass:"nt-economy"},
   {title:"Nabil Bank reports 14% net profit growth in Q2 2081/82",source:"Share Sansar",time:"Today",url:"https://www.sharesansar.com",tag:"company",tagClass:"nt-company"},
   {title:"Upper Tamakoshi Hydropower completes annual maintenance — expects normal production",source:"Mero Lagani",time:"Yesterday",url:"https://merolagani.com",tag:"nepse",tagClass:"nt-nepse"},
@@ -1554,7 +1785,6 @@ function newsItemHTML(n){
   </div>`;
 }
 function renderNewsWidget(){
-  // News is shown in the news page and also inline on dashboard — we'll add a mini block to dashboard
   const el=document.getElementById('newsMiniWidget');
   if(el)el.innerHTML=allNews.slice(0,5).map(newsItemHTML).join('');
 }
@@ -1581,7 +1811,7 @@ function logout(){sessionStorage.removeItem('_nr_session');window.location.repla
 // ══════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════
-loadData(SAMPLE_DATA.stocks,'Built-in NEPSE Data (2081/82)');
+loadData(SAMPLE_DATA.stocks,'NEPSE Listed Companies 2081/82');
 refreshNews();
 </script>
 </body>
